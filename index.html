@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -336,6 +337,23 @@
       </table>
     </div>
   </div>
+
+  <!-- Box espandibile correzione Doxa Kantar -->
+  <details style="margin-top:20px;">
+    <summary style="cursor:pointer;font-weight:700;font-size:0.95rem;padding:12px 16px;background:#f8f9fa;border:1px solid #e9ecef;border-radius:8px;list-style:none;display:flex;align-items:center;gap:8px;">
+      <span style="font-size:1.1rem;">&#x25B6;</span> Come funziona la correzione Doxa → Kantar
+    </summary>
+    <div style="padding:18px;background:#fafbfc;border:1px solid #e9ecef;border-top:none;border-radius:0 0 8px 8px;font-size:0.87rem;line-height:1.8;color:#333;">
+      <p><strong>Il problema</strong>: Doxa misurava l'awareness separatamente per il mercato fisso e per il mobile. Kantar misura l'awareness di brand a livello totale (tutti gli italiani). I due metodi non sono confrontabili direttamente: Kantar tende a rilevare valori più bassi perché include anche persone che non hanno familiarità con il mercato fisso o mobile specifico del brand.</p>
+      <br>
+      <p><strong>La soluzione</strong>: Per ogni brand, calcoliamo il fattore di raccordo k = media_Doxa_ultimi3mesi / media_Kantar_primi3mesi. Questo fattore cattura il "bias sistematico" tra i due istituti per quel brand specifico. Applicando k ai valori Kantar, li portiamo sulla scala Doxa, rendendo la serie confrontabile nel tempo.</p>
+      <br>
+      <p><strong>Perché è brand-specifico</strong>: Il fattore k è diverso per ogni brand perché il bias dipende dal mix fisso/mobile del brand stesso. Fastweb (storicamente fisso) ha il fattore più alto (1.22) perché la sua awareness nel mercato fisso era molto più alta di quella nel mercato totale. Iliad (mobile-first) ha il fattore più basso (1.12) perché era già misurato principalmente sul mobile.</p>
+      <br>
+      <p><strong>Limitazione</strong>: la correzione assume che il bias sia costante nel tempo. Se Kantar cambia metodologia internamente, il fattore potrebbe diventare impreciso. I valori post-raccordo vanno sempre letti con questa consapevolezza.</p>
+    </div>
+  </details>
+
 </div>
 
 <!-- SEZIONE 2: GRAFICO PRINCIPALE -->
@@ -355,9 +373,22 @@
   </div>
 </div>
 
-<!-- SEZIONE 3: MEDIA ANNUALE -->
+
+<!-- SEZIONE 3: TREND TRIMESTRALE -->
 <div class="section">
-  <div class="section-title">Media Annuale per Brand</div>
+  <div class="section-title">Sezione 3 — Trend Trimestrale</div>
+  <div class="chart-card">
+    <div class="chart-title">UBA Trimestrale — Media per Trimestre 2018–2026</div>
+    <div class="chart-subtitle">Media dei valori mensili per trimestre (Q1=gen-mar, Q2=apr-giu, Q3=lug-set, Q4=ott-dic). Le etichette mostrano i valori Vodafone.</div>
+    <div class="chart-wrap" style="height:400px;">
+      <canvas id="quarterlyChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- SEZIONE 4: MEDIA ANNUALE -->
+<div class="section">
+  <div class="section-title">Sezione 4 — Trend Annuale</div>
   <div class="chart-card">
     <div class="chart-title">UBA medio annuale — Grouped Bar Chart</div>
     <div class="chart-subtitle">Valori medi annuali del KPI armonizzato per brand. I dati 2026 coprono gen–lug 2026.</div>
@@ -367,7 +398,37 @@
   </div>
 </div>
 
-<!-- SEZIONE 4: FOCUS FASTWEB -->
+
+<!-- SEZIONE 5: ANALISI MERCATO -->
+<div class="section">
+  <div class="section-title">Analisi di Mercato — Benchmark Competitivo</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;" class="market-grid">
+    <div class="chart-card" style="margin-bottom:0;">
+      <div class="chart-title">Grafico A — Fastweb vs Mercato</div>
+      <div class="chart-subtitle">Fastweb vs media semplice e pesata TIM/Vodafone/Wind3. Asse secondario: gap Fastweb rispetto alla media semplice.</div>
+      <div class="chart-wrap" style="height:360px;">
+        <canvas id="marketChartA"></canvas>
+      </div>
+    </div>
+    <div class="chart-card" style="margin-bottom:0;">
+      <div class="chart-title">Grafico B — Fastweb vs Singoli Competitor</div>
+      <div class="chart-subtitle">Media annuale: Fastweb, TIM, Vodafone, Wind3.</div>
+      <div class="chart-wrap" style="height:360px;">
+        <canvas id="marketChartB"></canvas>
+      </div>
+    </div>
+  </div>
+  <style>
+    @media(max-width:768px){.market-grid{grid-template-columns:1fr!important;}}
+  </style>
+  <div class="card" style="border-left:4px solid #FDC400;background:#fffdf0;">
+    <p style="font-size:0.88rem;line-height:1.75;color:#333;">
+      La <strong>media semplice dei tre main brand</strong> (TIM, Vodafone, Wind3) rappresenta la direzione generale del mercato dell'awareness telco in Italia — un benchmark indipendente dalle dimensioni aziendali. Quando Fastweb si distacca positivamente da questo benchmark, significa che sta guadagnando awareness più velocemente del mercato. Quando il gap si restringe, il mercato si muove più velocemente di Fastweb.
+    </p>
+  </div>
+</div>
+
+<!-- SEZIONE 5: FOCUS FASTWEB -->
 <div class="section">
   <div class="section-title">Focus Fastweb</div>
   <div class="chart-card">
@@ -379,7 +440,7 @@
   </div>
 </div>
 
-<!-- SEZIONE 5: TABELLA DATI ANNUALI -->
+<!-- SEZIONE 6: TABELLA DATI ANNUALI -->
 <div class="section">
   <div class="section-title">Tabella Dati Annuali</div>
   <div class="card">
@@ -506,6 +567,270 @@ function buildCorrTable() {
   });
 }
 
+
+// ============================================================
+// HELPER: compute quarterly averages
+// ============================================================
+function computeQuarterlyAvgs() {
+  var result = {};
+  BRANDS.forEach(function(brand) {
+    result[brand] = {};
+    var map = {};
+    UBA_DATA.series[brand].forEach(function(item) {
+      var parts = item.month.split('-');
+      var y = parseInt(parts[0]);
+      var m = parseInt(parts[1]);
+      var q = Math.ceil(m / 3);
+      var key = 'Q' + q + ' ' + y;
+      if (!map[key]) map[key] = [];
+      map[key].push(item.value);
+    });
+    Object.keys(map).forEach(function(k) {
+      var arr = map[k];
+      result[brand][k] = arr.reduce(function(a,b){return a+b;}, 0) / arr.length;
+    });
+  });
+  return result;
+}
+
+// ============================================================
+// QUARTERLY CHART
+// ============================================================
+function buildQuarterlyChart() {
+  var labelSet = new Set();
+  BRANDS.forEach(function(brand) {
+    UBA_DATA.series[brand].forEach(function(item) {
+      var parts = item.month.split('-');
+      var y = parseInt(parts[0]);
+      var m = parseInt(parts[1]);
+      var q = Math.ceil(m / 3);
+      labelSet.add('Q' + q + ' ' + y);
+    });
+  });
+  var quarters = Array.from(labelSet).sort(function(a, b) {
+    var qa = parseInt(a[1]), ya = parseInt(a.split(' ')[1]);
+    var qb = parseInt(b[1]), yb = parseInt(b.split(' ')[1]);
+    return ya !== yb ? ya - yb : qa - qb;
+  });
+
+  var QAVGS = computeQuarterlyAvgs();
+
+  var datasets = BRANDS.map(function(brand) {
+    var values = quarters.map(function(q) { return QAVGS[brand][q] !== undefined ? QAVGS[brand][q] : null; });
+    var isVodafone = brand === 'Vodafone';
+    return {
+      label: brand,
+      data: values,
+      borderColor: BRAND_COLORS[brand],
+      backgroundColor: getColor(brand, 0.08),
+      borderWidth: isVodafone ? 3 : 2,
+      pointRadius: isVodafone ? 4 : 2,
+      pointHoverRadius: 6,
+      tension: 0.3,
+      spanGaps: false,
+      datalabels: isVodafone ? {
+        display: true,
+        align: 'top',
+        anchor: 'end',
+        formatter: function(v) { return v !== null ? v.toFixed(1) : ''; },
+        font: { size: 9, weight: '600' },
+        color: '#E60000',
+        backgroundColor: 'rgba(255,255,255,0.75)',
+        borderRadius: 3,
+        padding: { top: 2, bottom: 2, left: 3, right: 3 }
+      } : { display: false }
+    };
+  });
+
+  var ctx = document.getElementById('quarterlyChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: { labels: quarters, datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } },
+        datalabels: {},
+        tooltip: {
+          callbacks: {
+            label: function(item) {
+              var v = item.raw;
+              return v !== null ? ' ' + item.dataset.label + ': ' + v.toFixed(1) : ' ' + item.dataset.label + ': N/D';
+            }
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { font: { size: 9 }, maxRotation: 45 }, grid: { display: false } },
+        y: { min: 30, max: 105, ticks: { font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.05)' } }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+}
+
+// ============================================================
+// MARKET BENCHMARK CHARTS
+// ============================================================
+function computeMarketAvg() {
+  var total = 25 + 22 + 24;
+  var wTIM = 25 / total;
+  var wVod = 22 / total;
+  var wWin = 24 / total;
+
+  var allMonths = [];
+  var seen = new Set();
+  BRANDS.forEach(function(brand) {
+    UBA_DATA.series[brand].forEach(function(item) {
+      if (!seen.has(item.month)) { seen.add(item.month); allMonths.push(item.month); }
+    });
+  });
+  allMonths.sort();
+
+  var maps = {};
+  BRANDS.forEach(function(brand) {
+    maps[brand] = {};
+    UBA_DATA.series[brand].forEach(function(item) { maps[brand][item.month] = item.value; });
+  });
+
+  var simple = {}, weighted = {}, fastweb = {}, gap = {};
+  allMonths.forEach(function(m) {
+    var t = maps['TIM'][m], v = maps['Vodafone'][m], w = maps['WindTre'][m], f = maps['Fastweb'][m];
+    if (t !== undefined && v !== undefined && w !== undefined) {
+      simple[m] = (t + v + w) / 3;
+      weighted[m] = t * wTIM + v * wVod + w * wWin;
+    }
+    if (f !== undefined) fastweb[m] = f;
+    if (f !== undefined && simple[m] !== undefined) gap[m] = f - simple[m];
+  });
+
+  return { allMonths: allMonths, simple: simple, weighted: weighted, fastweb: fastweb, gap: gap };
+}
+
+function buildMarketChartA() {
+  var data = computeMarketAvg();
+  var allMonths = data.allMonths, simple = data.simple, weighted = data.weighted, fastweb = data.fastweb, gap = data.gap;
+  var labels = allMonths.map(monthLabel);
+  var dsMain = [
+    {
+      label: 'Fastweb',
+      data: allMonths.map(function(m) { return fastweb[m] !== undefined ? fastweb[m] : null; }),
+      borderColor: '#FDC400',
+      backgroundColor: 'rgba(253,196,0,0.08)',
+      borderWidth: 3,
+      pointRadius: 0,
+      tension: 0.3,
+      spanGaps: false,
+      yAxisID: 'y',
+      datalabels: { display: false }
+    },
+    {
+      label: 'Media Semplice (TIM+Vod+Win3)',
+      data: allMonths.map(function(m) { return simple[m] !== undefined ? simple[m] : null; }),
+      borderColor: '#999',
+      borderDash: [5,3],
+      borderWidth: 2,
+      pointRadius: 0,
+      tension: 0.3,
+      spanGaps: false,
+      yAxisID: 'y',
+      datalabels: { display: false }
+    },
+    {
+      label: 'Media Pesata AGCOM',
+      data: allMonths.map(function(m) { return weighted[m] !== undefined ? weighted[m] : null; }),
+      borderColor: '#555',
+      borderDash: [3,3],
+      borderWidth: 1.5,
+      pointRadius: 0,
+      tension: 0.3,
+      spanGaps: false,
+      yAxisID: 'y',
+      datalabels: { display: false }
+    },
+    {
+      label: 'Gap Fastweb (asse dx)',
+      data: allMonths.map(function(m) { return gap[m] !== undefined ? gap[m] : null; }),
+      borderColor: '#22aa44',
+      fill: { target: { value: 0 }, above: 'rgba(34,170,68,0.1)', below: 'rgba(230,0,0,0.1)' },
+      borderWidth: 1.5,
+      borderDash: [2,2],
+      pointRadius: 0,
+      tension: 0.2,
+      spanGaps: false,
+      yAxisID: 'y2',
+      datalabels: { display: false }
+    }
+  ];
+
+  var ctx = document.getElementById('marketChartA').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: { labels: labels, datasets: dsMain },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } },
+        datalabels: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(item) {
+              return ' ' + item.dataset.label + ': ' + (item.raw !== null ? parseFloat(item.raw).toFixed(1) : 'N/D');
+            }
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { maxTicksLimit: 10, font: { size: 9 } }, grid: { display: false } },
+        y: { min: 30, max: 105, position: 'left', ticks: { font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.04)' } },
+        y2: { min: -30, max: 30, position: 'right', title: { display: true, text: 'Gap', font: { size: 10 } }, grid: { display: false } }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+}
+
+function buildMarketChartB() {
+  var years = ['2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+  var mainBrands = ['Fastweb','TIM','Vodafone','WindTre'];
+  var colors = { Fastweb: '#FDC400', TIM: '#004d9f', Vodafone: '#E60000', WindTre: '#6600cc' };
+  var datasets = mainBrands.map(function(brand) {
+    return {
+      label: brand,
+      data: years.map(function(y) { return ANNUAL_AVGS[brand][y] || null; }),
+      backgroundColor: colors[brand] + 'CC',
+      borderColor: colors[brand],
+      borderWidth: 1.5,
+      borderRadius: 3,
+      datalabels: { display: false }
+    };
+  });
+
+  var ctx = document.getElementById('marketChartB').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: { labels: years, datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } },
+        datalabels: { display: false },
+        tooltip: { callbacks: { label: function(item) { return ' ' + item.dataset.label + ': ' + item.formattedValue; } } }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: { min: 30, ticks: { font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.04)' } }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+}
+
 // ============================================================
 // MAIN CHART (line chart with zones)
 // ============================================================
@@ -527,16 +852,28 @@ function buildMainChart() {
       const item = seriesMap[m];
       return item ? item.value : null;
     });
+    const isVodafone = brand === 'Vodafone';
     return {
       label: brand,
       data: values,
       borderColor: BRAND_COLORS[brand],
       backgroundColor: getColor(brand, 0.08),
-      borderWidth: 2,
-      pointRadius: 0,
+      borderWidth: isVodafone ? 3 : 2,
+      pointRadius: isVodafone ? 2 : 0,
       pointHoverRadius: 5,
       tension: 0.3,
-      spanGaps: false
+      spanGaps: false,
+      datalabels: isVodafone ? {
+        display: (ctx) => ctx.dataIndex % 3 === 0,
+        align: 'top',
+        anchor: 'end',
+        formatter: (v) => v !== null ? v.toFixed(1) : '',
+        font: { size: 8, weight: '600' },
+        color: '#E60000',
+        backgroundColor: 'rgba(255,255,255,0.75)',
+        borderRadius: 3,
+        padding: { top: 1, bottom: 1, left: 2, right: 2 }
+      } : { display: false }
     };
   });
 
@@ -559,6 +896,7 @@ function buildMainChart() {
       interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: { display: false },
+        datalabels: {},
         tooltip: {
           callbacks: {
             title: (items) => items[0].label,
@@ -598,7 +936,8 @@ function buildMainChart() {
         x: { ticks: { maxTicksLimit: 12, font: { size: 10 } }, grid: { display: false } },
         y: { min: 30, max: 105, ticks: { font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.05)' } }
       }
-    }
+    },
+    plugins: [ChartDataLabels]
   });
 }
 
@@ -608,13 +947,25 @@ function buildMainChart() {
 function buildBarChart() {
   const years = ['2018','2019','2020','2021','2022','2023','2024','2025','2026'];
   const datasets = BRANDS.map(brand => {
+    const isVodafone = brand === 'Vodafone';
     return {
       label: brand,
       data: years.map(y => ANNUAL_AVGS[brand][y] || null),
       backgroundColor: getColor(brand, 0.82),
       borderColor: BRAND_COLORS[brand],
       borderWidth: 1.5,
-      borderRadius: 3
+      borderRadius: 3,
+      datalabels: isVodafone ? {
+        display: true,
+        anchor: 'end',
+        align: 'top',
+        formatter: (v) => v !== null ? v.toFixed(1) : '',
+        font: { size: 9, weight: '700' },
+        color: '#E60000',
+        backgroundColor: 'rgba(255,255,255,0.85)',
+        borderRadius: 3,
+        padding: { top: 2, bottom: 2, left: 3, right: 3 }
+      } : { display: false }
     };
   });
   const ctx = document.getElementById('barChart').getContext('2d');
@@ -626,6 +977,7 @@ function buildBarChart() {
       maintainAspectRatio: false,
       plugins: {
         legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } },
+        datalabels: {},
         tooltip: {
           callbacks: {
             label: (item) => ` ${item.dataset.label}: ${item.formattedValue}`
@@ -636,7 +988,8 @@ function buildBarChart() {
         x: { grid: { display: false } },
         y: { min: 30, ticks: { font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.05)' } }
       }
-    }
+    },
+    plugins: [ChartDataLabels]
   });
 }
 
@@ -756,7 +1109,10 @@ document.addEventListener('DOMContentLoaded', () => {
   buildWeightsTable();
   buildCorrTable();
   buildMainChart();
+  buildQuarterlyChart();
   buildBarChart();
+  buildMarketChartA();
+  buildMarketChartB();
   buildFastwWebChart();
   buildHeatmapTable();
 });
