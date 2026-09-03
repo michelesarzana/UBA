@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UBA Telco Italia — KPI Armonizzato 2018-2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --fastweb: #FDC400;
+    --tim: #004d9f;
+    --vodafone: #E60000;
+    --wind3: #6600cc;
+    --iliad: #ff0032;
+    --bg: #f8f9fa;
+    --card: #ffffff;
+    --text: #1a1a2e;
+    --text-secondary: #6c757d;
+    --border: #e9ecef;
+    --accent: #FDC400;
+    --merkle-bg: rgba(253,196,0,0.04);
+    --doxa-bg: rgba(0,77,159,0.03);
+    --kantar-bg: rgba(230,0,0,0.03);
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+  /* HEADER */
+  .page-header {
+    background: linear-gradient(135deg, #181717 0%, #2d2d2d 100%);
+    color: #fff;
+    padding: 48px 40px 40px;
+    border-bottom: 4px solid var(--accent);
+  }
+  .page-header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .page-header h1 span { color: var(--accent); }
+  .page-header .subtitle {
+    font-size: 0.95rem;
+    color: #aaa;
+    font-weight: 400;
+  }
+  .page-header .source-badges {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .badge-merkle { background: rgba(253,196,0,0.2); color: #FDC400; border: 1px solid rgba(253,196,0,0.4); }
+  .badge-doxa { background: rgba(100,149,237,0.2); color: #6495ed; border: 1px solid rgba(100,149,237,0.4); }
+  .badge-kantar { background: rgba(255,100,100,0.2); color: #ff6464; border: 1px solid rgba(255,100,100,0.4); }
+  .badge-agcom { background: rgba(255,255,255,0.1); color: #ccc; border: 1px solid rgba(255,255,255,0.2); }
+  /* LAYOUT */
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+  .section { padding: 48px 0; }
+  .section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid var(--accent);
+    display: inline-block;
+  }
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+  /* METHODOLOGY */
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  .method-box {
+    background: var(--card);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 22px;
+    border-left: 4px solid var(--accent);
+  }
+  .method-box h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .method-box p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .phase-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  /* TABLES */
+  .table-wrap { overflow-x: auto; margin-top: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  table th {
+    background: #181717;
+    color: #fff;
+    padding: 10px 14px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.3px;
+  }
+  table th.brand-col { text-align: left; }
+  table td {
+    padding: 9px 14px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    font-variant-numeric: tabular-nums;
+  }
+  table td.brand-name {
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+  }
+  table tr:nth-child(even) td { background: #fafafa; }
+  table tr:hover td { background: #f0f8ff; }
+  .brand-dot {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  /* CHART CONTAINERS */
+  .chart-card {
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+  .chart-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .chart-subtitle {
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+  }
+  .chart-wrap { position: relative; }
+  /* BRAND LEGEND */
+  .brand-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  /* CONDITIONAL TABLE */
+  .heatmap-table td.val-cell {
+    font-weight: 600;
+    border-radius: 3px;
+  }
+  /* FOOTER */
+  .page-footer {
+    background: #181717;
+    color: #888;
+    padding: 40px;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    margin-top: 32px;
+  }
+  .page-footer .footer-title {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+  .page-footer a { color: #aaa; text-decoration: none; }
+  .page-footer a:hover { color: #FDC400; }
+  /* ZONE LEGEND */
+  .zone-legend {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .zone-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+  .zone-swatch {
+    width: 24px;
+    height: 12px;
+    border-radius: 2px;
+  }
+  /* CORRECTION TABLE */
+  .corr-table td, .corr-table th { padding: 8px 14px; }
+  /* FORMULA BOX */
+  .formula-box {
+    background: #f0f4ff;
+    border: 1px solid #c5d0ff;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: #2d3a8c;
+    margin: 12px 0;
+  }
+  @media (max-width: 768px) {
+    .page-header { padding: 32px 20px; }
+    .container { padding: 0 16px; }
+    .method-grid { grid-template-columns: 1fr; }
+    .page-header h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="container">
+    <h1>UBA Telco Italia — <span>KPI Armonizzato</span> 2018-2026</h1>
+    <div class="subtitle">Indice Unaided Brand Awareness ponderato per customer base fisso/mobile — dati mensili</div>
+    <div class="source-badges">
+      <span class="badge badge-merkle">📊 Merkle 2018–2023</span>
+      <span class="badge badge-doxa">📊 Doxa 2024–2025</span>
+      <span class="badge badge-kantar">📊 Kantar 2026+</span>
+      <span class="badge badge-agcom">🏛 Pesi AGCOM per operatore</span>
+    </div>
+  </div>
+</div>
+
+<!-- SEZIONE 1: IL METODO -->
+<div class="container">
+<div class="section">
+  <div class="section-title">Il Metodo</div>
+
+  <div class="method-grid">
+    <div class="method-box">
+      <div class="phase-tag" style="background:rgba(253,196,0,0.15);color:#b8860b;">Fase 1 — Dati storici</div>
+      <h3>Tre fasi dati</h3>
+      <p><strong>Merkle 2018–2023:</strong> tracciamento UBA mensile su fisso e mobile separati, metodo CAWI/CATI Merkle. <strong>Doxa 2024–2025:</strong> continuità metodologica con Merkle, stesso panel. <strong>Kantar 2026+:</strong> nuovo istituto con awareness unica (non split fisso/mobile). I dati Kantar sono raccordati con un fattore di correzione brand-specifico calcolato sul periodo di sovrapposizione.</p>
+    </div>
+    <div class="method-box">
+      <div class="phase-tag" style="background:rgba(0,77,159,0.1);color:#004d9f;">Fase 2 — Pesi AGCOM</div>
+      <h3>Pesi brand-specifici</h3>
+      <p>Per ogni brand e ogni anno si calcola il peso fisso/mobile in base alla customer base reale AGCOM: <strong>W_fisso = CB_fisso / (CB_fisso + CB_mobile)</strong>. I pesi variano significativamente tra brand (Fastweb prevalentemente fisso; Iliad mobile puro fino al 2022) e nel tempo (la quota mobile di Fastweb cresce da 2% nel 2018 a 26% nel 2025).</p>
+    </div>
+    <div class="method-box">
+      <div class="phase-tag" style="background:rgba(230,0,0,0.1);color:#c00;">Fase 3 — Raccordo Kantar</div>
+      <h3>Continuità di serie</h3>
+      <p>Il cambio Doxa → Kantar (gen 2026) introduce una discontinuità sistematica. Per garantire continuità, si calcola un fattore correttivo <strong>k = avg(Doxa ott-dic 2025) / avg(Kantar gen-mar 2026)</strong> e lo si applica a tutti i dati Kantar. I fattori variano per brand: Fastweb +21.8%, TIM +7.2%, Vodafone +13.8%.</p>
+    </div>
+  </div>
+
+  <div class="formula-box">UBA_combined(brand, mese) = UBA_fisso × W_fisso(brand, anno) + UBA_mobile × W_mobile(brand, anno)<br>UBA_adj_kantar = UBA_kantar_raw × k(brand)</div>
+
+  <!-- Tabella pesi fisso/mobile per brand per anno -->
+  <div class="card">
+    <div class="chart-title">Pesi fisso/mobile per brand e anno (AGCOM)</div>
+    <div class="chart-subtitle">W_fisso = quota linee BB/UBB fisso / (quota fisso + quota SIM Human). Fonte: Osservatori AGCOM 2018-2026.</div>
+    <div class="table-wrap">
+      <table id="weights-table">
+        <thead>
+          <tr>
+            <th class="brand-col">Brand</th>
+            <th>2018</th><th>2019</th><th>2020</th><th>2021</th><th>2022</th>
+            <th>2023</th><th>2024</th><th>2025</th><th>2026</th>
+          </tr>
+        </thead>
+        <tbody id="weights-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Tabella fattori correzione -->
+  <div class="card">
+    <div class="chart-title">Fattori di correzione Doxa → Kantar (2026)</div>
+    <div class="chart-subtitle">Calcolati come media(UBA_doxa ott-dic 2025) / media(UBA_kantar gen-mar 2026). Riflettono le differenze di metodo tra istituti.</div>
+    <div class="table-wrap">
+      <table class="corr-table">
+        <thead>
+          <tr>
+            <th class="brand-col">Brand</th>
+            <th>Fattore k</th>
+            <th>Effetto %</th>
+            <th>Periodo Doxa di riferimento</th>
+            <th>Periodo Kantar di riferimento</th>
+          </tr>
+        </thead>
+        <tbody id="corr-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- SEZIONE 2: GRAFICO PRINCIPALE -->
+<div class="section">
+  <div class="section-title">KPI Armonizzato Mensile — Tutti i Brand</div>
+  <div class="chart-card">
+    <div class="chart-title">UBA Combinato 2018–2026 (scala 0–100)</div>
+    <div class="chart-subtitle">Media ponderata UBA fisso e mobile per customer base AGCOM. Hover per dettaglio mensile.</div>
+    <div class="brand-legend" id="main-legend"></div>
+    <div class="zone-legend">
+      <span class="zone-item"><span class="zone-swatch" style="background:rgba(253,196,0,0.15);"></span> Merkle / Doxa (2018–2025)</span>
+      <span class="zone-item"><span class="zone-swatch" style="background:rgba(230,0,0,0.12);"></span> Kantar 2026+</span>
+    </div>
+    <div class="chart-wrap" style="height:400px;">
+      <canvas id="mainChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- SEZIONE 3: MEDIA ANNUALE -->
+<div class="section">
+  <div class="section-title">Media Annuale per Brand</div>
+  <div class="chart-card">
+    <div class="chart-title">UBA medio annuale — Grouped Bar Chart</div>
+    <div class="chart-subtitle">Valori medi annuali del KPI armonizzato per brand. I dati 2026 coprono gen–lug 2026.</div>
+    <div class="chart-wrap" style="height:380px;">
+      <canvas id="barChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- SEZIONE 4: FOCUS FASTWEB -->
+<div class="section">
+  <div class="section-title">Focus Fastweb</div>
+  <div class="chart-card">
+    <div class="chart-title" style="color:var(--fastweb);">Fastweb — UBA Armonizzato con eventi chiave</div>
+    <div class="chart-subtitle">Trend mensile Fastweb con annotazioni degli eventi più rilevanti per il brand.</div>
+    <div class="chart-wrap" style="height:360px;">
+      <canvas id="faswtwChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- SEZIONE 5: TABELLA DATI ANNUALI -->
+<div class="section">
+  <div class="section-title">Tabella Dati Annuali</div>
+  <div class="card">
+    <div class="chart-title">Media UBA annuale per brand — colorazione condizionale</div>
+    <div class="chart-subtitle">Verde = valore alto per quel brand nel periodo 2018-2026, Rosso = valore basso. La colorazione è relativa per ciascun brand.</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="brand-col">Brand</th>
+            <th>2018</th><th>2019</th><th>2020</th><th>2021</th><th>2022</th>
+            <th>2023</th><th>2024</th><th>2025</th><th>2026*</th>
+          </tr>
+        </thead>
+        <tbody id="heatmap-tbody"></tbody>
+      </table>
+      <p style="font-size:0.78rem;color:var(--text-secondary);margin-top:10px;">* 2026 = media gen–lug 2026 (dati Kantar raccordati).</p>
+    </div>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<!-- FOOTER -->
+<div class="page-footer">
+  <div class="container">
+    <div class="footer-title">Note metodologiche</div>
+    <p>
+      Il KPI UBA armonizzato è calcolato come media ponderata degli indici di Unaided Brand Awareness rilevati separatamente su clienti fisso broadband e mobile (SIM Human). I pesi annuali sono brand-specifici e derivano dalle quote di customer base ufficiali pubblicate da AGCOM negli Osservatori sulle Comunicazioni (2018–2026). La ponderazione riflette il fatto che brand storicamente fissi (Fastweb) hanno una base clienti diversa da brand a prevalenza mobile (Iliad) o bilanciati (TIM, Vodafone, WindTre).
+    </p>
+    <br>
+    <p>
+      <strong>Fonti AGCOM:</strong>
+      <a href="https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n1-2026" target="_blank">Osservatorio n.1/2026</a> ·
+      <a href="https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n-2-2026" target="_blank">Osservatorio n.2/2026</a> ·
+      <a href="https://www.mondomobileweb.it/300900-telefonia-fissa-quote-di-mercato/" target="_blank">MondoMobileWeb (fisso 2024)</a> ·
+      <a href="https://www.mondomobileweb.it/279296-telefonia-mobile-quote-di-mercato-fine-2023/" target="_blank">MondoMobileWeb (mobile 2023)</a> ·
+      <a href="https://temi.camera.it/leg19/post/OCD15-13653" target="_blank">Camera.it (dati storici)</a>
+    </p>
+    <br>
+    <p style="color:#666;">
+      Elaborazione interna Fastweb+Vodafone — Direzione Brand &amp; Media | Dati riservati ad uso interno.
+      Generato da Marvin (NextMindLab) · Settembre 2026.
+    </p>
+  </div>
+</div>
+
+
+<script>
+// ============================================================
+// DATI EMBEDDED - generati da compute_uba.py + AGCOM
+// ============================================================
+const UBA_DATA = {"brands": ["Fastweb", "TIM", "Vodafone", "WindTre", "Iliad"], "series": {"Fastweb": [{"month": "2018-01", "value": 55.3364, "source": "doxa", "uba_fixed": 55.8882, "uba_mobile": 28.7068, "w_fixed": 0.9797, "w_mobile": 0.0203}, {"month": "2018-02", "value": 55.4519, "source": "doxa", "uba_fixed": 56.0, "uba_mobile": 29.0, "w_fixed": 0.9797, "w_mobile": 0.0203}, {"month": "2018-03", "value": 60.3301, "source": "doxa", "uba_fixed": 61.0, "uba_mobile": 28.0, "w_fixed": 0.9797, "w_mobile": 0.0203}, {"month": "2018-04", "value": 62.0118, "source": "doxa", "uba_fixed": 62.6243, "uba_mobile": 32.4524, "w_fixed": 0.9797, "w_mobile": 0.0203}, {"month": "2018-05", "value": 60.6787, "source": "doxa", "uba_fixed": 61.4068, "uba_mobile": 25.5373, "w_fixed": 0.9797, "w_mobile": 0.0203}, {"month": "2018-06", "value": 57.1326, "source": "doxa", "uba_fixed": 57.8218, "uba_mobile": 23.873, "w_fixed": 0.9797, "w_mobile": 0.0203}, {"month": "2018-07", "value": 56.8857, "source": "doxa", "uba_fixed": 57.5, "uba_mobile": 27.2395, "w_fixed": 0.9797, "w_mobile": 0.0203}, {"month": "2018-09", "value": 58.149, "source": "doxa", "uba_fixed": 58.9286, "uba_mobile": 20.5264, "w_fixed": 0.9797, "w_mobile": 0.0203}, {"month": "2018-10", "value": 57.4516, "source": "doxa", "uba_fixed": 58.1349, "uba_mobile": 24.475, "w_fixed": 0.9797, "w_mobile": 0.0203}, {"month": "2018-11", "value": 59.6089, "source": "doxa", "uba_fixed": 60.3, "uba_mobile": 26.2546, "w_fixed": 0.9797, "w_mobile": 0.0203}, {"month": "2018-12", "value": 56.7412, "source": "doxa", "uba_fixed": 57.4553, "uba_mobile": 22.2776, "w_fixed": 0.9797, "w_mobile": 0.0203}, {"month": "2019-01", "value": 65.3956, "source": "doxa", "uba_fixed": 66.5339, "uba_mobile": 32.3529, "w_fixed": 0.9667, "w_mobile": 0.0333}, {"month": "2019-02", "value": 66.1603, "source": "doxa", "uba_fixed": 67.5889, "uba_mobile": 24.6869, "w_fixed": 0.9667, "w_mobile": 0.0333}, {"month": "2019-03", "value": 61.3038, "source": "doxa", "uba_fixed": 62.4254, "uba_mobile": 28.7425, "w_fixed": 0.9667, "w_mobile": 0.0333}, {"month": "2019-04", "value": 56.1009, "source": "doxa", "uba_fixed": 57.2565, "uba_mobile": 22.5549, "w_fixed": 0.9667, "w_mobile": 0.0333}, {"month": "2019-05", "value": 54.8118, "source": "doxa", "uba_fixed": 56.0396, "uba_mobile": 19.17, "w_fixed": 0.9667, "w_mobile": 0.0333}, {"month": "2019-06", "value": 57.1917, "source": "doxa", "uba_fixed": 58.2834, "uba_mobile": 25.498, "w_fixed": 0.9667, "w_mobile": 0.0333}, {"month": "2019-07", "value": 57.1821, "source": "doxa", "uba_fixed": 58.4493, "uba_mobile": 20.396, "w_fixed": 0.9667, "w_mobile": 0.0333}, {"month": "2019-09", "value": 60.4847, "source": "doxa", "uba_fixed": 61.9, "uba_mobile": 19.4, "w_fixed": 0.9667, "w_mobile": 0.0333}, {"month": "2019-10", "value": 58.6764, "source": "doxa", "uba_fixed": 59.9206, "uba_mobile": 22.5549, "w_fixed": 0.9667, "w_mobile": 0.0333}, {"month": "2019-11", "value": 56.3481, "source": "doxa", "uba_fixed": 57.5, "uba_mobile": 22.9084, "w_fixed": 0.9667, "w_mobile": 0.0333}, {"month": "2019-12", "value": 59.5278, "source": "doxa", "uba_fixed": 60.7, "uba_mobile": 25.5, "w_fixed": 0.9667, "w_mobile": 0.0333}, {"month": "2020-01", "value": 60.5584, "source": "doxa", "uba_fixed": 62.1, "uba_mobile": 27.3, "w_fixed": 0.9557, "w_mobile": 0.0443}, {"month": "2020-02", "value": 58.1117, "source": "doxa", "uba_fixed": 59.7, "uba_mobile": 23.8462, "w_fixed": 0.9557, "w_mobile": 0.0443}, {"month": "2020-03", "value": 63.5019, "source": "doxa", "uba_fixed": 65.2174, "uba_mobile": 26.494, "w_fixed": 0.9557, "w_mobile": 0.0443}, {"month": "2020-04", "value": 59.9546, "source": "doxa", "uba_fixed": 61.7, "uba_mobile": 22.3, "w_fixed": 0.9557, "w_mobile": 0.0443}, {"month": "2020-05", "value": 55.171, "source": "doxa", "uba_fixed": 56.5, "uba_mobile": 26.5, "w_fixed": 0.9557, "w_mobile": 0.0443}, {"month": "2020-06", "value": 61.1935, "source": "doxa", "uba_fixed": 63.0, "uba_mobile": 22.2222, "w_fixed": 0.9557, "w_mobile": 0.0443}, {"month": "2020-07", "value": 56.809, "source": "doxa", "uba_fixed": 58.2857, "uba_mobile": 24.9505, "w_fixed": 0.9557, "w_mobile": 0.0443}, {"month": "2020-09", "value": 61.4438, "source": "doxa", "uba_fixed": 63.3, "uba_mobile": 21.4, "w_fixed": 0.9557, "w_mobile": 0.0443}, {"month": "2020-10", "value": 56.2492, "source": "doxa", "uba_fixed": 57.7, "uba_mobile": 24.9501, "w_fixed": 0.9557, "w_mobile": 0.0443}, {"month": "2020-11", "value": 64.4328, "source": "doxa", "uba_fixed": 66.2675, "uba_mobile": 24.8521, "w_fixed": 0.9557, "w_mobile": 0.0443}, {"month": "2020-12", "value": 60.3077, "source": "doxa", "uba_fixed": 62.0, "uba_mobile": 23.8, "w_fixed": 0.9557, "w_mobile": 0.0443}, {"month": "2021-01", "value": 63.3457, "source": "doxa", "uba_fixed": 65.4, "uba_mobile": 33.15, "w_fixed": 0.9363, "w_mobile": 0.0637}, {"month": "2021-02", "value": 64.9783, "source": "doxa", "uba_fixed": 67.5, "uba_mobile": 27.9135, "w_fixed": 0.9363, "w_mobile": 0.0637}, {"month": "2021-03", "value": 64.324, "source": "doxa", "uba_fixed": 66.7, "uba_mobile": 29.4, "w_fixed": 0.9363, "w_mobile": 0.0637}, {"month": "2021-04", "value": 60.545, "source": "doxa", "uba_fixed": 62.8, "uba_mobile": 27.4, "w_fixed": 0.9363, "w_mobile": 0.0637}, {"month": "2021-05", "value": 59.5756, "source": "doxa", "uba_fixed": 61.2, "uba_mobile": 35.7, "w_fixed": 0.9363, "w_mobile": 0.0637}, {"month": "2021-06", "value": 63.1329, "source": "doxa", "uba_fixed": 65.7, "uba_mobile": 25.4, "w_fixed": 0.9363, "w_mobile": 0.0637}, {"month": "2021-07", "value": 53.5673, "source": "doxa", "uba_fixed": 55.8, "uba_mobile": 20.75, "w_fixed": 0.9363, "w_mobile": 0.0637}, {"month": "2021-09", "value": 53.5858, "source": "doxa", "uba_fixed": 56.0, "uba_mobile": 18.1, "w_fixed": 0.9363, "w_mobile": 0.0637}, {"month": "2021-10", "value": 52.7043, "source": "doxa", "uba_fixed": 54.8, "uba_mobile": 21.9, "w_fixed": 0.9363, "w_mobile": 0.0637}, {"month": "2021-11", "value": 52.9476, "source": "doxa", "uba_fixed": 55.4, "uba_mobile": 16.9, "w_fixed": 0.9363, "w_mobile": 0.0637}, {"month": "2021-12", "value": 53.4622, "source": "doxa", "uba_fixed": 55.8, "uba_mobile": 19.1, "w_fixed": 0.9363, "w_mobile": 0.0637}, {"month": "2022-01", "value": 48.8578, "source": "doxa", "uba_fixed": 51.8, "uba_mobile": 20.6, "w_fixed": 0.9057, "w_mobile": 0.0943}, {"month": "2022-02", "value": 51.1635, "source": "doxa", "uba_fixed": 54.2, "uba_mobile": 22.0, "w_fixed": 0.9057, "w_mobile": 0.0943}, {"month": "2022-03", "value": 50.6107, "source": "doxa", "uba_fixed": 53.6, "uba_mobile": 21.9, "w_fixed": 0.9057, "w_mobile": 0.0943}, {"month": "2022-04", "value": 49.439, "source": "doxa", "uba_fixed": 52.4, "uba_mobile": 21.0, "w_fixed": 0.9057, "w_mobile": 0.0943}, {"month": "2022-05", "value": 48.8504, "source": "doxa", "uba_fixed": 52.0, "uba_mobile": 18.6, "w_fixed": 0.9057, "w_mobile": 0.0943}, {"month": "2022-06", "value": 47.7747, "source": "doxa", "uba_fixed": 50.5, "uba_mobile": 21.6, "w_fixed": 0.9057, "w_mobile": 0.0943}, {"month": "2022-07", "value": 49.736, "source": "doxa", "uba_fixed": 52.4, "uba_mobile": 24.15, "w_fixed": 0.9057, "w_mobile": 0.0943}, {"month": "2022-09", "value": 49.5765, "source": "doxa", "uba_fixed": 52.0, "uba_mobile": 26.3, "w_fixed": 0.9057, "w_mobile": 0.0943}, {"month": "2022-10", "value": 55.3794, "source": "doxa", "uba_fixed": 58.1, "uba_mobile": 29.25, "w_fixed": 0.9057, "w_mobile": 0.0943}, {"month": "2022-11", "value": 52.2623, "source": "doxa", "uba_fixed": 54.7, "uba_mobile": 28.85, "w_fixed": 0.9057, "w_mobile": 0.0943}, {"month": "2022-12", "value": 54.105, "source": "doxa", "uba_fixed": 57.0, "uba_mobile": 26.3, "w_fixed": 0.9057, "w_mobile": 0.0943}, {"month": "2023-01", "value": 44.7515, "source": "doxa", "uba_fixed": 50.3, "uba_mobile": 29.55, "w_fixed": 0.7326, "w_mobile": 0.2674}, {"month": "2023-02", "value": 48.9707, "source": "doxa", "uba_fixed": 54.8, "uba_mobile": 33.0, "w_fixed": 0.7326, "w_mobile": 0.2674}, {"month": "2023-03", "value": 45.4487, "source": "doxa", "uba_fixed": 52.0, "uba_mobile": 27.5, "w_fixed": 0.7326, "w_mobile": 0.2674}, {"month": "2023-04", "value": 45.3456, "source": "doxa", "uba_fixed": 50.6, "uba_mobile": 30.95, "w_fixed": 0.7326, "w_mobile": 0.2674}, {"month": "2023-05", "value": 46.3156, "source": "doxa", "uba_fixed": 52.8, "uba_mobile": 28.55, "w_fixed": 0.7326, "w_mobile": 0.2674}, {"month": "2023-06", "value": 45.8943, "source": "doxa", "uba_fixed": 50.4, "uba_mobile": 33.55, "w_fixed": 0.7326, "w_mobile": 0.2674}, {"month": "2023-07", "value": 46.3439, "source": "doxa", "uba_fixed": 52.2, "uba_mobile": 30.3, "w_fixed": 0.7326, "w_mobile": 0.2674}, {"month": "2023-09", "value": 47.0696, "source": "doxa", "uba_fixed": 53.3, "uba_mobile": 30.0, "w_fixed": 0.7326, "w_mobile": 0.2674}, {"month": "2023-10", "value": 48.583, "source": "doxa", "uba_fixed": 54.8, "uba_mobile": 31.55, "w_fixed": 0.7326, "w_mobile": 0.2674}, {"month": "2023-11", "value": 44.7985, "source": "doxa", "uba_fixed": 50.2, "uba_mobile": 30.0, "w_fixed": 0.7326, "w_mobile": 0.2674}, {"month": "2023-12", "value": 45.698, "source": "doxa", "uba_fixed": 51.3, "uba_mobile": 30.35, "w_fixed": 0.7326, "w_mobile": 0.2674}, {"month": "2024-01", "value": 47.2177, "source": "doxa", "uba_fixed": 54.0401, "uba_mobile": 28.0301, "w_fixed": 0.7377, "w_mobile": 0.2623}, {"month": "2024-02", "value": 48.5434, "source": "doxa", "uba_fixed": 55.1474, "uba_mobile": 29.9704, "w_fixed": 0.7377, "w_mobile": 0.2623}, {"month": "2024-03", "value": 50.2882, "source": "doxa", "uba_fixed": 56.251, "uba_mobile": 33.5184, "w_fixed": 0.7377, "w_mobile": 0.2623}, {"month": "2024-04", "value": 53.2811, "source": "doxa", "uba_fixed": 58.6305, "uba_mobile": 38.2364, "w_fixed": 0.7377, "w_mobile": 0.2623}, {"month": "2024-05", "value": 52.4728, "source": "doxa", "uba_fixed": 57.6211, "uba_mobile": 37.9937, "w_fixed": 0.7377, "w_mobile": 0.2623}, {"month": "2024-06", "value": 48.3735, "source": "doxa", "uba_fixed": 53.1213, "uba_mobile": 35.0204, "w_fixed": 0.7377, "w_mobile": 0.2623}, {"month": "2024-07", "value": 49.6666, "source": "doxa", "uba_fixed": 54.7195, "uba_mobile": 35.4556, "w_fixed": 0.7377, "w_mobile": 0.2623}, {"month": "2024-08", "value": 51.4291, "source": "doxa", "uba_fixed": 57.1611, "uba_mobile": 35.3082, "w_fixed": 0.7377, "w_mobile": 0.2623}, {"month": "2024-09", "value": 50.099, "source": "doxa", "uba_fixed": 54.1476, "uba_mobile": 38.7126, "w_fixed": 0.7377, "w_mobile": 0.2623}, {"month": "2024-10", "value": 50.7477, "source": "doxa", "uba_fixed": 54.5882, "uba_mobile": 39.9468, "w_fixed": 0.7377, "w_mobile": 0.2623}, {"month": "2024-11", "value": 50.0342, "source": "doxa", "uba_fixed": 53.7446, "uba_mobile": 39.599, "w_fixed": 0.7377, "w_mobile": 0.2623}, {"month": "2024-12", "value": 50.9143, "source": "doxa", "uba_fixed": 55.9297, "uba_mobile": 36.809, "w_fixed": 0.7377, "w_mobile": 0.2623}, {"month": "2025-01", "value": 55.1255, "source": "doxa", "uba_fixed": 59.7352, "uba_mobile": 41.8821, "w_fixed": 0.7418, "w_mobile": 0.2582}, {"month": "2025-02", "value": 52.6951, "source": "doxa", "uba_fixed": 57.0172, "uba_mobile": 40.278, "w_fixed": 0.7418, "w_mobile": 0.2582}, {"month": "2025-03", "value": 51.0095, "source": "doxa", "uba_fixed": 55.6591, "uba_mobile": 37.6511, "w_fixed": 0.7418, "w_mobile": 0.2582}, {"month": "2025-04", "value": 50.5252, "source": "doxa", "uba_fixed": 53.8939, "uba_mobile": 40.8473, "w_fixed": 0.7418, "w_mobile": 0.2582}, {"month": "2025-05", "value": 51.6191, "source": "doxa", "uba_fixed": 57.1132, "uba_mobile": 35.8346, "w_fixed": 0.7418, "w_mobile": 0.2582}, {"month": "2025-06", "value": 52.4342, "source": "doxa", "uba_fixed": 55.9607, "uba_mobile": 42.3028, "w_fixed": 0.7418, "w_mobile": 0.2582}, {"month": "2025-07", "value": 53.1016, "source": "doxa", "uba_fixed": 57.7115, "uba_mobile": 39.8577, "w_fixed": 0.7418, "w_mobile": 0.2582}, {"month": "2025-08", "value": 53.8909, "source": "doxa", "uba_fixed": 60.0443, "uba_mobile": 36.2125, "w_fixed": 0.7418, "w_mobile": 0.2582}, {"month": "2025-09", "value": 51.4903, "source": "doxa", "uba_fixed": 55.3338, "uba_mobile": 40.4481, "w_fixed": 0.7418, "w_mobile": 0.2582}, {"month": "2025-10", "value": 54.5212, "source": "doxa", "uba_fixed": 58.4172, "uba_mobile": 43.3282, "w_fixed": 0.7418, "w_mobile": 0.2582}, {"month": "2025-11", "value": 57.0405, "source": "doxa", "uba_fixed": 62.0997, "uba_mobile": 42.5055, "w_fixed": 0.7418, "w_mobile": 0.2582}, {"month": "2025-12", "value": 51.4393, "source": "doxa", "uba_fixed": 55.8478, "uba_mobile": 38.7738, "w_fixed": 0.7418, "w_mobile": 0.2582}, {"month": "2026-01", "value": 52.6569, "source": "kantar_adj", "uba_kantar_raw": 43.25, "k_factor": 1.2175, "w_fixed": null, "w_mobile": null}, {"month": "2026-02", "value": 53.8744, "source": "kantar_adj", "uba_kantar_raw": 44.25, "k_factor": 1.2175, "w_fixed": null, "w_mobile": null}, {"month": "2026-03", "value": 56.4726, "source": "kantar_adj", "uba_kantar_raw": 46.384, "k_factor": 1.2175, "w_fixed": null, "w_mobile": null}, {"month": "2026-04", "value": 56.1362, "source": "kantar_adj", "uba_kantar_raw": 46.1078, "k_factor": 1.2175, "w_fixed": null, "w_mobile": null}, {"month": "2026-05", "value": 57.2225, "source": "kantar_adj", "uba_kantar_raw": 47.0, "k_factor": 1.2175, "w_fixed": null, "w_mobile": null}, {"month": "2026-06", "value": 58.2943, "source": "kantar_adj", "uba_kantar_raw": 47.8803, "k_factor": 1.2175, "w_fixed": null, "w_mobile": null}, {"month": "2026-07", "value": 51.6589, "source": "kantar_adj", "uba_kantar_raw": 42.4303, "k_factor": 1.2175, "w_fixed": null, "w_mobile": null}], "TIM": [{"month": "2018-01", "value": 93.2716, "source": "doxa", "uba_fixed": 93.2136, "uba_mobile": 93.3679, "w_fixed": 0.6236, "w_mobile": 0.3764}, {"month": "2018-02", "value": 93.7528, "source": "doxa", "uba_fixed": 93.0, "uba_mobile": 95.0, "w_fixed": 0.6236, "w_mobile": 0.3764}, {"month": "2018-03", "value": 94.5534, "source": "doxa", "uba_fixed": 97.0, "uba_mobile": 90.5, "w_fixed": 0.6236, "w_mobile": 0.3764}, {"month": "2018-04", "value": 94.7288, "source": "doxa", "uba_fixed": 94.4334, "uba_mobile": 95.2183, "w_fixed": 0.6236, "w_mobile": 0.3764}, {"month": "2018-05", "value": 93.4842, "source": "doxa", "uba_fixed": 92.5856, "uba_mobile": 94.9731, "w_fixed": 0.6236, "w_mobile": 0.3764}, {"month": "2018-06", "value": 92.7238, "source": "doxa", "uba_fixed": 92.8713, "uba_mobile": 92.4795, "w_fixed": 0.6236, "w_mobile": 0.3764}, {"month": "2018-07", "value": 92.4489, "source": "doxa", "uba_fixed": 91.7308, "uba_mobile": 93.6385, "w_fixed": 0.6236, "w_mobile": 0.3764}, {"month": "2018-09", "value": 92.0711, "source": "doxa", "uba_fixed": 91.2698, "uba_mobile": 93.3987, "w_fixed": 0.6236, "w_mobile": 0.3764}, {"month": "2018-10", "value": 92.0338, "source": "doxa", "uba_fixed": 90.873, "uba_mobile": 93.9569, "w_fixed": 0.6236, "w_mobile": 0.3764}, {"month": "2018-11", "value": 95.5129, "source": "doxa", "uba_fixed": 96.1924, "uba_mobile": 94.3871, "w_fixed": 0.6236, "w_mobile": 0.3764}, {"month": "2018-12", "value": 92.6948, "source": "doxa", "uba_fixed": 92.4453, "uba_mobile": 93.108, "w_fixed": 0.6236, "w_mobile": 0.3764}, {"month": "2019-01", "value": 94.0977, "source": "doxa", "uba_fixed": 94.8207, "uba_mobile": 92.9412, "w_fixed": 0.6153, "w_mobile": 0.3847}, {"month": "2019-02", "value": 95.2762, "source": "doxa", "uba_fixed": 95.4545, "uba_mobile": 94.9911, "w_fixed": 0.6153, "w_mobile": 0.3847}, {"month": "2019-03", "value": 94.3052, "source": "doxa", "uba_fixed": 93.2406, "uba_mobile": 96.008, "w_fixed": 0.6153, "w_mobile": 0.3847}, {"month": "2019-04", "value": 92.8632, "source": "doxa", "uba_fixed": 92.6441, "uba_mobile": 93.2136, "w_fixed": 0.6153, "w_mobile": 0.3847}, {"month": "2019-05", "value": 93.8898, "source": "doxa", "uba_fixed": 93.9, "uba_mobile": 93.8735, "w_fixed": 0.6153, "w_mobile": 0.3847}, {"month": "2019-06", "value": 90.8716, "source": "doxa", "uba_fixed": 91.018, "uba_mobile": 90.6375, "w_fixed": 0.6153, "w_mobile": 0.3847}, {"month": "2019-07", "value": 92.8399, "source": "doxa", "uba_fixed": 93.4394, "uba_mobile": 91.8812, "w_fixed": 0.6153, "w_mobile": 0.3847}, {"month": "2019-09", "value": 92.4615, "source": "doxa", "uba_fixed": 92.5, "uba_mobile": 92.4, "w_fixed": 0.6153, "w_mobile": 0.3847}, {"month": "2019-10", "value": 93.2147, "source": "doxa", "uba_fixed": 91.4683, "uba_mobile": 96.008, "w_fixed": 0.6153, "w_mobile": 0.3847}, {"month": "2019-11", "value": 94.5394, "source": "doxa", "uba_fixed": 94.8617, "uba_mobile": 94.0239, "w_fixed": 0.6153, "w_mobile": 0.3847}, {"month": "2019-12", "value": 93.3083, "source": "doxa", "uba_fixed": 92.955, "uba_mobile": 93.8735, "w_fixed": 0.6153, "w_mobile": 0.3847}, {"month": "2020-01", "value": 92.7162, "source": "doxa", "uba_fixed": 92.6, "uba_mobile": 92.9, "w_fixed": 0.6128, "w_mobile": 0.3872}, {"month": "2020-02", "value": 94.1111, "source": "doxa", "uba_fixed": 94.4, "uba_mobile": 93.6538, "w_fixed": 0.6128, "w_mobile": 0.3872}, {"month": "2020-03", "value": 94.1624, "source": "doxa", "uba_fixed": 95.2569, "uba_mobile": 92.4303, "w_fixed": 0.6128, "w_mobile": 0.3872}, {"month": "2020-04", "value": 93.2387, "source": "doxa", "uba_fixed": 93.2, "uba_mobile": 93.3, "w_fixed": 0.6128, "w_mobile": 0.3872}, {"month": "2020-05", "value": 92.9741, "source": "doxa", "uba_fixed": 93.4, "uba_mobile": 92.3, "w_fixed": 0.6128, "w_mobile": 0.3872}, {"month": "2020-06", "value": 92.7659, "source": "doxa", "uba_fixed": 93.4, "uba_mobile": 91.7625, "w_fixed": 0.6128, "w_mobile": 0.3872}, {"month": "2020-07", "value": 91.8773, "source": "doxa", "uba_fixed": 92.0, "uba_mobile": 91.6832, "w_fixed": 0.6128, "w_mobile": 0.3872}, {"month": "2020-09", "value": 92.9677, "source": "doxa", "uba_fixed": 93.2, "uba_mobile": 92.6, "w_fixed": 0.6128, "w_mobile": 0.3872}, {"month": "2020-10", "value": 94.3138, "source": "doxa", "uba_fixed": 94.0, "uba_mobile": 94.8104, "w_fixed": 0.6128, "w_mobile": 0.3872}, {"month": "2020-11", "value": 94.0245, "source": "doxa", "uba_fixed": 94.6108, "uba_mobile": 93.0966, "w_fixed": 0.6128, "w_mobile": 0.3872}, {"month": "2020-12", "value": 92.7162, "source": "doxa", "uba_fixed": 92.6, "uba_mobile": 92.9, "w_fixed": 0.6128, "w_mobile": 0.3872}, {"month": "2021-01", "value": 91.6621, "source": "doxa", "uba_fixed": 91.3, "uba_mobile": 92.25, "w_fixed": 0.6188, "w_mobile": 0.3812}, {"month": "2021-02", "value": 93.3634, "source": "doxa", "uba_fixed": 93.2, "uba_mobile": 93.6286, "w_fixed": 0.6188, "w_mobile": 0.3812}, {"month": "2021-03", "value": 92.6859, "source": "doxa", "uba_fixed": 92.4, "uba_mobile": 93.15, "w_fixed": 0.6188, "w_mobile": 0.3812}, {"month": "2021-04", "value": 92.5044, "source": "doxa", "uba_fixed": 93.0, "uba_mobile": 91.7, "w_fixed": 0.6188, "w_mobile": 0.3812}, {"month": "2021-05", "value": 91.4765, "source": "doxa", "uba_fixed": 91.0, "uba_mobile": 92.25, "w_fixed": 0.6188, "w_mobile": 0.3812}, {"month": "2021-06", "value": 92.1663, "source": "doxa", "uba_fixed": 92.7, "uba_mobile": 91.3, "w_fixed": 0.6188, "w_mobile": 0.3812}, {"month": "2021-07", "value": 90.7232, "source": "doxa", "uba_fixed": 91.6, "uba_mobile": 89.3, "w_fixed": 0.6188, "w_mobile": 0.3812}, {"month": "2021-09", "value": 91.2475, "source": "doxa", "uba_fixed": 91.4, "uba_mobile": 91.0, "w_fixed": 0.6188, "w_mobile": 0.3812}, {"month": "2021-10", "value": 92.7807, "source": "doxa", "uba_fixed": 93.2, "uba_mobile": 92.1, "w_fixed": 0.6188, "w_mobile": 0.3812}, {"month": "2021-11", "value": 91.2381, "source": "doxa", "uba_fixed": 91.2, "uba_mobile": 91.3, "w_fixed": 0.6188, "w_mobile": 0.3812}, {"month": "2021-12", "value": 91.3525, "source": "doxa", "uba_fixed": 91.2, "uba_mobile": 91.6, "w_fixed": 0.6188, "w_mobile": 0.3812}, {"month": "2022-01", "value": 92.2073, "source": "doxa", "uba_fixed": 93.2, "uba_mobile": 90.6, "w_fixed": 0.6182, "w_mobile": 0.3818}, {"month": "2022-02", "value": 90.7982, "source": "doxa", "uba_fixed": 91.6, "uba_mobile": 89.5, "w_fixed": 0.6182, "w_mobile": 0.3818}, {"month": "2022-03", "value": 90.5327, "source": "doxa", "uba_fixed": 90.8, "uba_mobile": 90.1, "w_fixed": 0.6182, "w_mobile": 0.3818}, {"month": "2022-04", "value": 88.9145, "source": "doxa", "uba_fixed": 88.8, "uba_mobile": 89.1, "w_fixed": 0.6182, "w_mobile": 0.3818}, {"month": "2022-05", "value": 90.4091, "source": "doxa", "uba_fixed": 90.6, "uba_mobile": 90.1, "w_fixed": 0.6182, "w_mobile": 0.3818}, {"month": "2022-06", "value": 90.0273, "source": "doxa", "uba_fixed": 90.6, "uba_mobile": 89.1, "w_fixed": 0.6182, "w_mobile": 0.3818}, {"month": "2022-07", "value": 89.5891, "source": "doxa", "uba_fixed": 90.2, "uba_mobile": 88.6, "w_fixed": 0.6182, "w_mobile": 0.3818}, {"month": "2022-09", "value": 89.4364, "source": "doxa", "uba_fixed": 90.2, "uba_mobile": 88.2, "w_fixed": 0.6182, "w_mobile": 0.3818}, {"month": "2022-10", "value": 91.5327, "source": "doxa", "uba_fixed": 91.8, "uba_mobile": 91.1, "w_fixed": 0.6182, "w_mobile": 0.3818}, {"month": "2022-11", "value": 90.8455, "source": "doxa", "uba_fixed": 91.8, "uba_mobile": 89.3, "w_fixed": 0.6182, "w_mobile": 0.3818}, {"month": "2022-12", "value": 88.0018, "source": "doxa", "uba_fixed": 87.2, "uba_mobile": 89.3, "w_fixed": 0.6182, "w_mobile": 0.3818}, {"month": "2023-01", "value": 88.4031, "source": "doxa", "uba_fixed": 87.2, "uba_mobile": 90.3, "w_fixed": 0.6119, "w_mobile": 0.3881}, {"month": "2023-02", "value": 91.3193, "source": "doxa", "uba_fixed": 92.6, "uba_mobile": 89.3, "w_fixed": 0.6119, "w_mobile": 0.3881}, {"month": "2023-03", "value": 88.7762, "source": "doxa", "uba_fixed": 88.0, "uba_mobile": 90.0, "w_fixed": 0.6119, "w_mobile": 0.3881}, {"month": "2023-04", "value": 89.9283, "source": "doxa", "uba_fixed": 90.2, "uba_mobile": 89.5, "w_fixed": 0.6119, "w_mobile": 0.3881}, {"month": "2023-05", "value": 89.5343, "source": "doxa", "uba_fixed": 90.0, "uba_mobile": 88.8, "w_fixed": 0.6119, "w_mobile": 0.3881}, {"month": "2023-06", "value": 88.8059, "source": "doxa", "uba_fixed": 89.0, "uba_mobile": 88.5, "w_fixed": 0.6119, "w_mobile": 0.3881}, {"month": "2023-07", "value": 87.6567, "source": "doxa", "uba_fixed": 88.2, "uba_mobile": 86.8, "w_fixed": 0.6119, "w_mobile": 0.3881}, {"month": "2023-09", "value": 87.1105, "source": "doxa", "uba_fixed": 86.8, "uba_mobile": 87.6, "w_fixed": 0.6119, "w_mobile": 0.3881}, {"month": "2023-10", "value": 88.6657, "source": "doxa", "uba_fixed": 88.2, "uba_mobile": 89.4, "w_fixed": 0.6119, "w_mobile": 0.3881}, {"month": "2023-11", "value": 89.1433, "source": "doxa", "uba_fixed": 88.6, "uba_mobile": 90.0, "w_fixed": 0.6119, "w_mobile": 0.3881}, {"month": "2023-12", "value": 87.206, "source": "doxa", "uba_fixed": 87.4, "uba_mobile": 86.9, "w_fixed": 0.6119, "w_mobile": 0.3881}, {"month": "2024-01", "value": 84.6175, "source": "doxa", "uba_fixed": 83.9332, "uba_mobile": 85.6101, "w_fixed": 0.5919, "w_mobile": 0.4081}, {"month": "2024-02", "value": 83.8256, "source": "doxa", "uba_fixed": 84.2527, "uba_mobile": 83.2061, "w_fixed": 0.5919, "w_mobile": 0.4081}, {"month": "2024-03", "value": 85.646, "source": "doxa", "uba_fixed": 86.2971, "uba_mobile": 84.7017, "w_fixed": 0.5919, "w_mobile": 0.4081}, {"month": "2024-04", "value": 83.9357, "source": "doxa", "uba_fixed": 84.5718, "uba_mobile": 83.0132, "w_fixed": 0.5919, "w_mobile": 0.4081}, {"month": "2024-05", "value": 84.7565, "source": "doxa", "uba_fixed": 83.9132, "uba_mobile": 85.9796, "w_fixed": 0.5919, "w_mobile": 0.4081}, {"month": "2024-06", "value": 83.211, "source": "doxa", "uba_fixed": 82.9843, "uba_mobile": 83.5399, "w_fixed": 0.5919, "w_mobile": 0.4081}, {"month": "2024-07", "value": 84.1907, "source": "doxa", "uba_fixed": 83.6379, "uba_mobile": 84.9924, "w_fixed": 0.5919, "w_mobile": 0.4081}, {"month": "2024-08", "value": 82.5432, "source": "doxa", "uba_fixed": 83.4336, "uba_mobile": 81.2519, "w_fixed": 0.5919, "w_mobile": 0.4081}, {"month": "2024-09", "value": 82.4368, "source": "doxa", "uba_fixed": 81.5151, "uba_mobile": 83.7737, "w_fixed": 0.5919, "w_mobile": 0.4081}, {"month": "2024-10", "value": 82.1726, "source": "doxa", "uba_fixed": 81.1314, "uba_mobile": 83.6829, "w_fixed": 0.5919, "w_mobile": 0.4081}, {"month": "2024-11", "value": 82.6571, "source": "doxa", "uba_fixed": 82.425, "uba_mobile": 82.9938, "w_fixed": 0.5919, "w_mobile": 0.4081}, {"month": "2024-12", "value": 81.2875, "source": "doxa", "uba_fixed": 82.3983, "uba_mobile": 79.6764, "w_fixed": 0.5919, "w_mobile": 0.4081}, {"month": "2025-01", "value": 82.1153, "source": "doxa", "uba_fixed": 82.6118, "uba_mobile": 81.3904, "w_fixed": 0.5935, "w_mobile": 0.4065}, {"month": "2025-02", "value": 82.4706, "source": "doxa", "uba_fixed": 81.9503, "uba_mobile": 83.2302, "w_fixed": 0.5935, "w_mobile": 0.4065}, {"month": "2025-03", "value": 82.104, "source": "doxa", "uba_fixed": 81.4869, "uba_mobile": 83.0051, "w_fixed": 0.5935, "w_mobile": 0.4065}, {"month": "2025-04", "value": 81.8379, "source": "doxa", "uba_fixed": 82.6178, "uba_mobile": 80.6993, "w_fixed": 0.5935, "w_mobile": 0.4065}, {"month": "2025-05", "value": 81.0044, "source": "doxa", "uba_fixed": 81.4971, "uba_mobile": 80.285, "w_fixed": 0.5935, "w_mobile": 0.4065}, {"month": "2025-06", "value": 79.7132, "source": "doxa", "uba_fixed": 78.5983, "uba_mobile": 81.341, "w_fixed": 0.5935, "w_mobile": 0.4065}, {"month": "2025-07", "value": 82.6448, "source": "doxa", "uba_fixed": 82.2433, "uba_mobile": 83.2309, "w_fixed": 0.5935, "w_mobile": 0.4065}, {"month": "2025-08", "value": 82.6606, "source": "doxa", "uba_fixed": 83.169, "uba_mobile": 81.9184, "w_fixed": 0.5935, "w_mobile": 0.4065}, {"month": "2025-09", "value": 82.8035, "source": "doxa", "uba_fixed": 83.2968, "uba_mobile": 82.0831, "w_fixed": 0.5935, "w_mobile": 0.4065}, {"month": "2025-10", "value": 80.0612, "source": "doxa", "uba_fixed": 79.2283, "uba_mobile": 81.2772, "w_fixed": 0.5935, "w_mobile": 0.4065}, {"month": "2025-11", "value": 82.0407, "source": "doxa", "uba_fixed": 81.0555, "uba_mobile": 83.479, "w_fixed": 0.5935, "w_mobile": 0.4065}, {"month": "2025-12", "value": 79.9512, "source": "doxa", "uba_fixed": 79.8455, "uba_mobile": 80.1056, "w_fixed": 0.5935, "w_mobile": 0.4065}, {"month": "2026-01", "value": 80.1245, "source": "kantar_adj", "uba_kantar_raw": 74.75, "k_factor": 1.0719, "w_fixed": null, "w_mobile": null}, {"month": "2026-02", "value": 81.7324, "source": "kantar_adj", "uba_kantar_raw": 76.25, "k_factor": 1.0719, "w_fixed": null, "w_mobile": null}, {"month": "2026-03", "value": 80.192, "source": "kantar_adj", "uba_kantar_raw": 74.813, "k_factor": 1.0719, "w_fixed": null, "w_mobile": null}, {"month": "2026-04", "value": 78.0925, "source": "kantar_adj", "uba_kantar_raw": 72.8543, "k_factor": 1.0719, "w_fixed": null, "w_mobile": null}, {"month": "2026-05", "value": 80.3925, "source": "kantar_adj", "uba_kantar_raw": 75.0, "k_factor": 1.0719, "w_fixed": null, "w_mobile": null}, {"month": "2026-06", "value": 80.7266, "source": "kantar_adj", "uba_kantar_raw": 75.3117, "k_factor": 1.0719, "w_fixed": null, "w_mobile": null}, {"month": "2026-07", "value": 76.0152, "source": "kantar_adj", "uba_kantar_raw": 70.9163, "k_factor": 1.0719, "w_fixed": null, "w_mobile": null}], "Vodafone": [{"month": "2018-01", "value": 82.5739, "source": "doxa", "uba_fixed": 72.0559, "uba_mobile": 89.4987, "w_fixed": 0.397, "w_mobile": 0.603}, {"month": "2018-02", "value": 84.5525, "source": "doxa", "uba_fixed": 74.0, "uba_mobile": 91.5, "w_fixed": 0.397, "w_mobile": 0.603}, {"month": "2018-03", "value": 82.5375, "source": "doxa", "uba_fixed": 75.0, "uba_mobile": 87.5, "w_fixed": 0.397, "w_mobile": 0.603}, {"month": "2018-04", "value": 85.2571, "source": "doxa", "uba_fixed": 77.5348, "uba_mobile": 90.3413, "w_fixed": 0.397, "w_mobile": 0.603}, {"month": "2018-05", "value": 86.5107, "source": "doxa", "uba_fixed": 77.1863, "uba_mobile": 92.6497, "w_fixed": 0.397, "w_mobile": 0.603}, {"month": "2018-06", "value": 83.9618, "source": "doxa", "uba_fixed": 74.4554, "uba_mobile": 90.2205, "w_fixed": 0.397, "w_mobile": 0.603}, {"month": "2018-07", "value": 84.0297, "source": "doxa", "uba_fixed": 74.4231, "uba_mobile": 90.3545, "w_fixed": 0.397, "w_mobile": 0.603}, {"month": "2018-09", "value": 84.9217, "source": "doxa", "uba_fixed": 75.7937, "uba_mobile": 90.9314, "w_fixed": 0.397, "w_mobile": 0.603}, {"month": "2018-10", "value": 85.1458, "source": "doxa", "uba_fixed": 77.1825, "uba_mobile": 90.3886, "w_fixed": 0.397, "w_mobile": 0.603}, {"month": "2018-11", "value": 83.9695, "source": "doxa", "uba_fixed": 75.1503, "uba_mobile": 89.7759, "w_fixed": 0.397, "w_mobile": 0.603}, {"month": "2018-12", "value": 84.0872, "source": "doxa", "uba_fixed": 75.5467, "uba_mobile": 89.71, "w_fixed": 0.397, "w_mobile": 0.603}, {"month": "2019-01", "value": 85.9252, "source": "doxa", "uba_fixed": 77.6892, "uba_mobile": 91.3725, "w_fixed": 0.3981, "w_mobile": 0.6019}, {"month": "2019-02", "value": 88.4382, "source": "doxa", "uba_fixed": 83.3992, "uba_mobile": 91.771, "w_fixed": 0.3981, "w_mobile": 0.6019}, {"month": "2019-03", "value": 85.3605, "source": "doxa", "uba_fixed": 79.5229, "uba_mobile": 89.2216, "w_fixed": 0.3981, "w_mobile": 0.6019}, {"month": "2019-04", "value": 84.5958, "source": "doxa", "uba_fixed": 80.3181, "uba_mobile": 87.4251, "w_fixed": 0.3981, "w_mobile": 0.6019}, {"month": "2019-05", "value": 84.1569, "source": "doxa", "uba_fixed": 76.0396, "uba_mobile": 89.5257, "w_fixed": 0.3981, "w_mobile": 0.6019}, {"month": "2019-06", "value": 83.1855, "source": "doxa", "uba_fixed": 78.2435, "uba_mobile": 86.4542, "w_fixed": 0.3981, "w_mobile": 0.6019}, {"month": "2019-07", "value": 85.9706, "source": "doxa", "uba_fixed": 77.9324, "uba_mobile": 91.2871, "w_fixed": 0.3981, "w_mobile": 0.6019}, {"month": "2019-09", "value": 86.0958, "source": "doxa", "uba_fixed": 81.1, "uba_mobile": 89.4, "w_fixed": 0.3981, "w_mobile": 0.6019}, {"month": "2019-10", "value": 85.6269, "source": "doxa", "uba_fixed": 77.7778, "uba_mobile": 90.8184, "w_fixed": 0.3981, "w_mobile": 0.6019}, {"month": "2019-11", "value": 85.7516, "source": "doxa", "uba_fixed": 78.0632, "uba_mobile": 90.8367, "w_fixed": 0.3981, "w_mobile": 0.6019}, {"month": "2019-12", "value": 85.7206, "source": "doxa", "uba_fixed": 78.4736, "uba_mobile": 90.5138, "w_fixed": 0.3981, "w_mobile": 0.6019}, {"month": "2020-01", "value": 84.1096, "source": "doxa", "uba_fixed": 79.4, "uba_mobile": 87.4, "w_fixed": 0.4113, "w_mobile": 0.5887}, {"month": "2020-02", "value": 86.381, "source": "doxa", "uba_fixed": 80.1, "uba_mobile": 90.7692, "w_fixed": 0.4113, "w_mobile": 0.5887}, {"month": "2020-03", "value": 85.5855, "source": "doxa", "uba_fixed": 83.2016, "uba_mobile": 87.251, "w_fixed": 0.4113, "w_mobile": 0.5887}, {"month": "2020-04", "value": 86.862, "source": "doxa", "uba_fixed": 82.8, "uba_mobile": 89.7, "w_fixed": 0.4113, "w_mobile": 0.5887}, {"month": "2020-05", "value": 84.4612, "source": "doxa", "uba_fixed": 81.4, "uba_mobile": 86.6, "w_fixed": 0.4113, "w_mobile": 0.5887}, {"month": "2020-06", "value": 84.4925, "source": "doxa", "uba_fixed": 78.2, "uba_mobile": 88.8889, "w_fixed": 0.4113, "w_mobile": 0.5887}, {"month": "2020-07", "value": 85.2057, "source": "doxa", "uba_fixed": 79.619, "uba_mobile": 89.1089, "w_fixed": 0.4113, "w_mobile": 0.5887}, {"month": "2020-09", "value": 85.0911, "source": "doxa", "uba_fixed": 81.5, "uba_mobile": 87.6, "w_fixed": 0.4113, "w_mobile": 0.5887}, {"month": "2020-10", "value": 87.0915, "source": "doxa", "uba_fixed": 80.9, "uba_mobile": 91.4172, "w_fixed": 0.4113, "w_mobile": 0.5887}, {"month": "2020-11", "value": 85.9366, "source": "doxa", "uba_fixed": 79.6407, "uba_mobile": 90.3353, "w_fixed": 0.4113, "w_mobile": 0.5887}, {"month": "2020-12", "value": 84.6273, "source": "doxa", "uba_fixed": 79.8, "uba_mobile": 88.0, "w_fixed": 0.4113, "w_mobile": 0.5887}, {"month": "2021-01", "value": 84.2569, "source": "doxa", "uba_fixed": 81.5, "uba_mobile": 86.25, "w_fixed": 0.4196, "w_mobile": 0.5804}, {"month": "2021-02", "value": 85.4921, "source": "doxa", "uba_fixed": 80.8, "uba_mobile": 88.8842, "w_fixed": 0.4196, "w_mobile": 0.5804}, {"month": "2021-03", "value": 86.0852, "source": "doxa", "uba_fixed": 81.5, "uba_mobile": 89.4, "w_fixed": 0.4196, "w_mobile": 0.5804}, {"month": "2021-04", "value": 85.7471, "source": "doxa", "uba_fixed": 82.7, "uba_mobile": 87.95, "w_fixed": 0.4196, "w_mobile": 0.5804}, {"month": "2021-05", "value": 83.0432, "source": "doxa", "uba_fixed": 78.4, "uba_mobile": 86.4, "w_fixed": 0.4196, "w_mobile": 0.5804}, {"month": "2021-06", "value": 84.1048, "source": "doxa", "uba_fixed": 80.1, "uba_mobile": 87.0, "w_fixed": 0.4196, "w_mobile": 0.5804}, {"month": "2021-07", "value": 80.5718, "source": "doxa", "uba_fixed": 75.0, "uba_mobile": 84.6, "w_fixed": 0.4196, "w_mobile": 0.5804}, {"month": "2021-09", "value": 83.6369, "source": "doxa", "uba_fixed": 79.4, "uba_mobile": 86.7, "w_fixed": 0.4196, "w_mobile": 0.5804}, {"month": "2021-10", "value": 80.4417, "source": "doxa", "uba_fixed": 72.2, "uba_mobile": 86.4, "w_fixed": 0.4196, "w_mobile": 0.5804}, {"month": "2021-11", "value": 84.0432, "source": "doxa", "uba_fixed": 79.4, "uba_mobile": 87.4, "w_fixed": 0.4196, "w_mobile": 0.5804}, {"month": "2021-12", "value": 80.364, "source": "doxa", "uba_fixed": 71.6, "uba_mobile": 86.7, "w_fixed": 0.4196, "w_mobile": 0.5804}, {"month": "2022-01", "value": 82.2213, "source": "doxa", "uba_fixed": 76.6, "uba_mobile": 86.4, "w_fixed": 0.4264, "w_mobile": 0.5736}, {"month": "2022-02", "value": 81.8477, "source": "doxa", "uba_fixed": 76.8, "uba_mobile": 85.6, "w_fixed": 0.4264, "w_mobile": 0.5736}, {"month": "2022-03", "value": 81.4492, "source": "doxa", "uba_fixed": 76.0, "uba_mobile": 85.5, "w_fixed": 0.4264, "w_mobile": 0.5736}, {"month": "2022-04", "value": 81.4152, "source": "doxa", "uba_fixed": 77.4, "uba_mobile": 84.4, "w_fixed": 0.4264, "w_mobile": 0.5736}, {"month": "2022-05", "value": 81.4182, "source": "doxa", "uba_fixed": 76.6, "uba_mobile": 85.0, "w_fixed": 0.4264, "w_mobile": 0.5736}, {"month": "2022-06", "value": 83.4741, "source": "doxa", "uba_fixed": 79.0, "uba_mobile": 86.8, "w_fixed": 0.4264, "w_mobile": 0.5736}, {"month": "2022-07", "value": 82.333, "source": "doxa", "uba_fixed": 77.4, "uba_mobile": 86.0, "w_fixed": 0.4264, "w_mobile": 0.5736}, {"month": "2022-09", "value": 80.5979, "source": "doxa", "uba_fixed": 73.6, "uba_mobile": 85.8, "w_fixed": 0.4264, "w_mobile": 0.5736}, {"month": "2022-10", "value": 80.4802, "source": "doxa", "uba_fixed": 74.4, "uba_mobile": 85.0, "w_fixed": 0.4264, "w_mobile": 0.5736}, {"month": "2022-11", "value": 81.8726, "source": "doxa", "uba_fixed": 77.8, "uba_mobile": 84.9, "w_fixed": 0.4264, "w_mobile": 0.5736}, {"month": "2022-12", "value": 81.7314, "source": "doxa", "uba_fixed": 77.2, "uba_mobile": 85.1, "w_fixed": 0.4264, "w_mobile": 0.5736}, {"month": "2023-01", "value": 81.4442, "source": "doxa", "uba_fixed": 77.4, "uba_mobile": 84.5, "w_fixed": 0.4304, "w_mobile": 0.5696}, {"month": "2023-02", "value": 80.2378, "source": "doxa", "uba_fixed": 74.2, "uba_mobile": 84.8, "w_fixed": 0.4304, "w_mobile": 0.5696}, {"month": "2023-03", "value": 79.4682, "source": "doxa", "uba_fixed": 74.0, "uba_mobile": 83.6, "w_fixed": 0.4304, "w_mobile": 0.5696}, {"month": "2023-04", "value": 79.0669, "source": "doxa", "uba_fixed": 73.2, "uba_mobile": 83.5, "w_fixed": 0.4304, "w_mobile": 0.5696}, {"month": "2023-05", "value": 76.6099, "source": "doxa", "uba_fixed": 70.8, "uba_mobile": 81.0, "w_fixed": 0.4304, "w_mobile": 0.5696}, {"month": "2023-06", "value": 77.9024, "source": "doxa", "uba_fixed": 74.2, "uba_mobile": 80.7, "w_fixed": 0.4304, "w_mobile": 0.5696}, {"month": "2023-07", "value": 77.4707, "source": "doxa", "uba_fixed": 72.8, "uba_mobile": 81.0, "w_fixed": 0.4304, "w_mobile": 0.5696}, {"month": "2023-09", "value": 79.1821, "source": "doxa", "uba_fixed": 73.6, "uba_mobile": 83.4, "w_fixed": 0.4304, "w_mobile": 0.5696}, {"month": "2023-10", "value": 80.0973, "source": "doxa", "uba_fixed": 74.8, "uba_mobile": 84.1, "w_fixed": 0.4304, "w_mobile": 0.5696}, {"month": "2023-11", "value": 80.3251, "source": "doxa", "uba_fixed": 74.8, "uba_mobile": 84.5, "w_fixed": 0.4304, "w_mobile": 0.5696}, {"month": "2023-12", "value": 78.5555, "source": "doxa", "uba_fixed": 73.6, "uba_mobile": 82.3, "w_fixed": 0.4304, "w_mobile": 0.5696}, {"month": "2024-01", "value": 77.0288, "source": "doxa", "uba_fixed": 71.0108, "uba_mobile": 81.6715, "w_fixed": 0.4355, "w_mobile": 0.5645}, {"month": "2024-02", "value": 76.5588, "source": "doxa", "uba_fixed": 72.5339, "uba_mobile": 79.664, "w_fixed": 0.4355, "w_mobile": 0.5645}, {"month": "2024-03", "value": 76.8756, "source": "doxa", "uba_fixed": 71.1192, "uba_mobile": 81.3165, "w_fixed": 0.4355, "w_mobile": 0.5645}, {"month": "2024-04", "value": 76.6502, "source": "doxa", "uba_fixed": 72.7183, "uba_mobile": 79.6835, "w_fixed": 0.4355, "w_mobile": 0.5645}, {"month": "2024-05", "value": 76.2402, "source": "doxa", "uba_fixed": 70.425, "uba_mobile": 80.7265, "w_fixed": 0.4355, "w_mobile": 0.5645}, {"month": "2024-06", "value": 75.8542, "source": "doxa", "uba_fixed": 71.081, "uba_mobile": 79.5367, "w_fixed": 0.4355, "w_mobile": 0.5645}, {"month": "2024-07", "value": 73.9486, "source": "doxa", "uba_fixed": 67.4164, "uba_mobile": 78.9881, "w_fixed": 0.4355, "w_mobile": 0.5645}, {"month": "2024-08", "value": 72.6788, "source": "doxa", "uba_fixed": 68.5859, "uba_mobile": 75.8364, "w_fixed": 0.4355, "w_mobile": 0.5645}, {"month": "2024-09", "value": 73.2988, "source": "doxa", "uba_fixed": 67.987, "uba_mobile": 77.3967, "w_fixed": 0.4355, "w_mobile": 0.5645}, {"month": "2024-10", "value": 73.6671, "source": "doxa", "uba_fixed": 67.1397, "uba_mobile": 78.7028, "w_fixed": 0.4355, "w_mobile": 0.5645}, {"month": "2024-11", "value": 70.4366, "source": "doxa", "uba_fixed": 65.6335, "uba_mobile": 74.1421, "w_fixed": 0.4355, "w_mobile": 0.5645}, {"month": "2024-12", "value": 72.0241, "source": "doxa", "uba_fixed": 66.9601, "uba_mobile": 75.9308, "w_fixed": 0.4355, "w_mobile": 0.5645}, {"month": "2025-01", "value": 72.4108, "source": "doxa", "uba_fixed": 68.876, "uba_mobile": 75.1602, "w_fixed": 0.4375, "w_mobile": 0.5625}, {"month": "2025-02", "value": 74.4604, "source": "doxa", "uba_fixed": 69.1036, "uba_mobile": 78.6267, "w_fixed": 0.4375, "w_mobile": 0.5625}, {"month": "2025-03", "value": 72.4581, "source": "doxa", "uba_fixed": 66.7934, "uba_mobile": 76.8639, "w_fixed": 0.4375, "w_mobile": 0.5625}, {"month": "2025-04", "value": 74.0052, "source": "doxa", "uba_fixed": 70.9274, "uba_mobile": 76.3991, "w_fixed": 0.4375, "w_mobile": 0.5625}, {"month": "2025-05", "value": 70.0979, "source": "doxa", "uba_fixed": 64.8721, "uba_mobile": 74.1624, "w_fixed": 0.4375, "w_mobile": 0.5625}, {"month": "2025-06", "value": 69.8351, "source": "doxa", "uba_fixed": 63.6555, "uba_mobile": 74.6414, "w_fixed": 0.4375, "w_mobile": 0.5625}, {"month": "2025-07", "value": 70.6022, "source": "doxa", "uba_fixed": 64.4208, "uba_mobile": 75.41, "w_fixed": 0.4375, "w_mobile": 0.5625}, {"month": "2025-08", "value": 71.9238, "source": "doxa", "uba_fixed": 67.5921, "uba_mobile": 75.2928, "w_fixed": 0.4375, "w_mobile": 0.5625}, {"month": "2025-09", "value": 70.664, "source": "doxa", "uba_fixed": 65.9661, "uba_mobile": 74.3179, "w_fixed": 0.4375, "w_mobile": 0.5625}, {"month": "2025-10", "value": 70.2638, "source": "doxa", "uba_fixed": 64.1672, "uba_mobile": 75.0055, "w_fixed": 0.4375, "w_mobile": 0.5625}, {"month": "2025-11", "value": 70.982, "source": "doxa", "uba_fixed": 67.6836, "uba_mobile": 73.5473, "w_fixed": 0.4375, "w_mobile": 0.5625}, {"month": "2025-12", "value": 68.5925, "source": "doxa", "uba_fixed": 63.8233, "uba_mobile": 72.3019, "w_fixed": 0.4375, "w_mobile": 0.5625}, {"month": "2026-01", "value": 71.1375, "source": "kantar_adj", "uba_kantar_raw": 62.5, "k_factor": 1.1382, "w_fixed": null, "w_mobile": null}, {"month": "2026-02", "value": 71.9912, "source": "kantar_adj", "uba_kantar_raw": 63.25, "k_factor": 1.1382, "w_fixed": null, "w_mobile": null}, {"month": "2026-03", "value": 66.7025, "source": "kantar_adj", "uba_kantar_raw": 58.6035, "k_factor": 1.1382, "w_fixed": null, "w_mobile": null}, {"month": "2026-04", "value": 65.4295, "source": "kantar_adj", "uba_kantar_raw": 57.485, "k_factor": 1.1382, "w_fixed": null, "w_mobile": null}, {"month": "2026-05", "value": 68.292, "source": "kantar_adj", "uba_kantar_raw": 60.0, "k_factor": 1.1382, "w_fixed": null, "w_mobile": null}, {"month": "2026-06", "value": 68.4055, "source": "kantar_adj", "uba_kantar_raw": 60.0998, "k_factor": 1.1382, "w_fixed": null, "w_mobile": null}, {"month": "2026-07", "value": 66.4328, "source": "kantar_adj", "uba_kantar_raw": 58.3665, "k_factor": 1.1382, "w_fixed": null, "w_mobile": null}], "WindTre": [{"month": "2018-01", "value": 78.1521, "source": "doxa", "uba_fixed": 61.0, "uba_mobile": 85.7362, "w_fixed": 0.3066, "w_mobile": 0.6934}, {"month": "2018-02", "value": 80.7477, "source": "doxa", "uba_fixed": 70.0, "uba_mobile": 85.5, "w_fixed": 0.3066, "w_mobile": 0.6934}, {"month": "2018-03", "value": 78.934, "source": "doxa", "uba_fixed": 72.0, "uba_mobile": 82.0, "w_fixed": 0.3066, "w_mobile": 0.6934}, {"month": "2018-04", "value": 82.71, "source": "doxa", "uba_fixed": 71.7694, "uba_mobile": 87.5476, "w_fixed": 0.3066, "w_mobile": 0.6934}, {"month": "2018-05", "value": 81.0203, "source": "doxa", "uba_fixed": 63.8783, "uba_mobile": 88.6, "w_fixed": 0.3066, "w_mobile": 0.6934}, {"month": "2018-06", "value": 77.2419, "source": "doxa", "uba_fixed": 62.3762, "uba_mobile": 83.815, "w_fixed": 0.3066, "w_mobile": 0.6934}, {"month": "2018-07", "value": 79.7126, "source": "doxa", "uba_fixed": 67.1154, "uba_mobile": 85.2827, "w_fixed": 0.3066, "w_mobile": 0.6934}, {"month": "2018-09", "value": 78.9735, "source": "doxa", "uba_fixed": 66.6667, "uba_mobile": 84.4153, "w_fixed": 0.3066, "w_mobile": 0.6934}, {"month": "2018-10", "value": 78.9126, "source": "doxa", "uba_fixed": 64.881, "uba_mobile": 85.1169, "w_fixed": 0.3066, "w_mobile": 0.6934}, {"month": "2018-11", "value": 79.9885, "source": "doxa", "uba_fixed": 67.1343, "uba_mobile": 85.6723, "w_fixed": 0.3066, "w_mobile": 0.6934}, {"month": "2018-12", "value": 79.7352, "source": "doxa", "uba_fixed": 72.7634, "uba_mobile": 82.818, "w_fixed": 0.3066, "w_mobile": 0.6934}, {"month": "2019-01", "value": 81.6578, "source": "doxa", "uba_fixed": 72.51, "uba_mobile": 86.0784, "w_fixed": 0.3258, "w_mobile": 0.6742}, {"month": "2019-02", "value": 82.2866, "source": "doxa", "uba_fixed": 74.5059, "uba_mobile": 86.0465, "w_fixed": 0.3258, "w_mobile": 0.6742}, {"month": "2019-03", "value": 76.9869, "source": "doxa", "uba_fixed": 68.1909, "uba_mobile": 81.2375, "w_fixed": 0.3258, "w_mobile": 0.6742}, {"month": "2019-04", "value": 79.9173, "source": "doxa", "uba_fixed": 70.5765, "uba_mobile": 84.4311, "w_fixed": 0.3258, "w_mobile": 0.6742}, {"month": "2019-05", "value": 77.801, "source": "doxa", "uba_fixed": 63.7624, "uba_mobile": 84.585, "w_fixed": 0.3258, "w_mobile": 0.6742}, {"month": "2019-06", "value": 77.8628, "source": "doxa", "uba_fixed": 66.2675, "uba_mobile": 83.4661, "w_fixed": 0.3258, "w_mobile": 0.6742}, {"month": "2019-07", "value": 79.0937, "source": "doxa", "uba_fixed": 67.7932, "uba_mobile": 84.5545, "w_fixed": 0.3258, "w_mobile": 0.6742}, {"month": "2019-09", "value": 79.3049, "source": "doxa", "uba_fixed": 72.9, "uba_mobile": 82.4, "w_fixed": 0.3258, "w_mobile": 0.6742}, {"month": "2019-10", "value": 77.373, "source": "doxa", "uba_fixed": 66.0714, "uba_mobile": 82.8343, "w_fixed": 0.3258, "w_mobile": 0.6742}, {"month": "2019-11", "value": 81.3602, "source": "doxa", "uba_fixed": 69.17, "uba_mobile": 87.251, "w_fixed": 0.3258, "w_mobile": 0.6742}, {"month": "2019-12", "value": 80.8782, "source": "doxa", "uba_fixed": 72.7984, "uba_mobile": 84.7826, "w_fixed": 0.3258, "w_mobile": 0.6742}, {"month": "2020-01", "value": 77.3537, "source": "doxa", "uba_fixed": 73.7, "uba_mobile": 79.2, "w_fixed": 0.3357, "w_mobile": 0.6643}, {"month": "2020-02", "value": 75.7021, "source": "doxa", "uba_fixed": 69.1, "uba_mobile": 79.0385, "w_fixed": 0.3357, "w_mobile": 0.6643}, {"month": "2020-03", "value": 81.5828, "source": "doxa", "uba_fixed": 74.3083, "uba_mobile": 85.259, "w_fixed": 0.3357, "w_mobile": 0.6643}, {"month": "2020-04", "value": 84.5274, "source": "doxa", "uba_fixed": 73.5, "uba_mobile": 90.1, "w_fixed": 0.3357, "w_mobile": 0.6643}, {"month": "2020-05", "value": 83.0688, "source": "doxa", "uba_fixed": 74.3, "uba_mobile": 87.5, "w_fixed": 0.3357, "w_mobile": 0.6643}, {"month": "2020-06", "value": 84.6012, "source": "doxa", "uba_fixed": 74.6, "uba_mobile": 89.6552, "w_fixed": 0.3357, "w_mobile": 0.6643}, {"month": "2020-07", "value": 80.8917, "source": "doxa", "uba_fixed": 69.3333, "uba_mobile": 86.7327, "w_fixed": 0.3357, "w_mobile": 0.6643}, {"month": "2020-09", "value": 82.3981, "source": "doxa", "uba_fixed": 72.5, "uba_mobile": 87.4, "w_fixed": 0.3357, "w_mobile": 0.6643}, {"month": "2020-10", "value": 83.249, "source": "doxa", "uba_fixed": 73.8, "uba_mobile": 88.024, "w_fixed": 0.3357, "w_mobile": 0.6643}, {"month": "2020-11", "value": 81.4354, "source": "doxa", "uba_fixed": 70.4591, "uba_mobile": 86.9822, "w_fixed": 0.3357, "w_mobile": 0.6643}, {"month": "2020-12", "value": 80.3702, "source": "doxa", "uba_fixed": 72.0, "uba_mobile": 84.6, "w_fixed": 0.3357, "w_mobile": 0.6643}, {"month": "2021-01", "value": 82.6567, "source": "doxa", "uba_fixed": 74.4, "uba_mobile": 87.05, "w_fixed": 0.3473, "w_mobile": 0.6527}, {"month": "2021-02", "value": 81.8055, "source": "doxa", "uba_fixed": 74.7, "uba_mobile": 85.5863, "w_fixed": 0.3473, "w_mobile": 0.6527}, {"month": "2021-03", "value": 81.1546, "source": "doxa", "uba_fixed": 72.8, "uba_mobile": 85.6, "w_fixed": 0.3473, "w_mobile": 0.6527}, {"month": "2021-04", "value": 80.6273, "source": "doxa", "uba_fixed": 71.0, "uba_mobile": 85.75, "w_fixed": 0.3473, "w_mobile": 0.6527}, {"month": "2021-05", "value": 78.224, "source": "doxa", "uba_fixed": 70.0, "uba_mobile": 82.6, "w_fixed": 0.3473, "w_mobile": 0.6527}, {"month": "2021-06", "value": 81.445, "source": "doxa", "uba_fixed": 74.2, "uba_mobile": 85.3, "w_fixed": 0.3473, "w_mobile": 0.6527}, {"month": "2021-07", "value": 75.3987, "source": "doxa", "uba_fixed": 60.8, "uba_mobile": 83.1667, "w_fixed": 0.3473, "w_mobile": 0.6527}, {"month": "2021-09", "value": 75.9384, "source": "doxa", "uba_fixed": 60.6, "uba_mobile": 84.1, "w_fixed": 0.3473, "w_mobile": 0.6527}, {"month": "2021-10", "value": 74.2247, "source": "doxa", "uba_fixed": 59.8, "uba_mobile": 81.9, "w_fixed": 0.3473, "w_mobile": 0.6527}, {"month": "2021-11", "value": 75.5552, "source": "doxa", "uba_fixed": 61.0, "uba_mobile": 83.3, "w_fixed": 0.3473, "w_mobile": 0.6527}, {"month": "2021-12", "value": 77.454, "source": "doxa", "uba_fixed": 64.4, "uba_mobile": 84.4, "w_fixed": 0.3473, "w_mobile": 0.6527}, {"month": "2022-01", "value": 77.2851, "source": "doxa", "uba_fixed": 62.4, "uba_mobile": 85.6, "w_fixed": 0.3584, "w_mobile": 0.6416}, {"month": "2022-02", "value": 74.0997, "source": "doxa", "uba_fixed": 63.0, "uba_mobile": 80.3, "w_fixed": 0.3584, "w_mobile": 0.6416}, {"month": "2022-03", "value": 73.1979, "source": "doxa", "uba_fixed": 61.2, "uba_mobile": 79.9, "w_fixed": 0.3584, "w_mobile": 0.6416}, {"month": "2022-04", "value": 73.5794, "source": "doxa", "uba_fixed": 59.4, "uba_mobile": 81.5, "w_fixed": 0.3584, "w_mobile": 0.6416}, {"month": "2022-05", "value": 75.6811, "source": "doxa", "uba_fixed": 62.4, "uba_mobile": 83.1, "w_fixed": 0.3584, "w_mobile": 0.6416}, {"month": "2022-06", "value": 75.6395, "source": "doxa", "uba_fixed": 63.0, "uba_mobile": 82.7, "w_fixed": 0.3584, "w_mobile": 0.6416}, {"month": "2022-07", "value": 73.3789, "source": "doxa", "uba_fixed": 62.6, "uba_mobile": 79.4, "w_fixed": 0.3584, "w_mobile": 0.6416}, {"month": "2022-09", "value": 72.2957, "source": "doxa", "uba_fixed": 62.8, "uba_mobile": 77.6, "w_fixed": 0.3584, "w_mobile": 0.6416}, {"month": "2022-10", "value": 71.3488, "source": "doxa", "uba_fixed": 59.8, "uba_mobile": 77.8, "w_fixed": 0.3584, "w_mobile": 0.6416}, {"month": "2022-11", "value": 76.1072, "source": "doxa", "uba_fixed": 65.2, "uba_mobile": 82.2, "w_fixed": 0.3584, "w_mobile": 0.6416}, {"month": "2022-12", "value": 74.4054, "source": "doxa", "uba_fixed": 62.6, "uba_mobile": 81.0, "w_fixed": 0.3584, "w_mobile": 0.6416}, {"month": "2023-01", "value": 73.1734, "source": "doxa", "uba_fixed": 63.6, "uba_mobile": 78.7, "w_fixed": 0.366, "w_mobile": 0.634}, {"month": "2023-02", "value": 75.1878, "source": "doxa", "uba_fixed": 64.6, "uba_mobile": 81.3, "w_fixed": 0.366, "w_mobile": 0.634}, {"month": "2023-03", "value": 73.8264, "source": "doxa", "uba_fixed": 61.4, "uba_mobile": 81.0, "w_fixed": 0.366, "w_mobile": 0.634}, {"month": "2023-04", "value": 73.8806, "source": "doxa", "uba_fixed": 63.8, "uba_mobile": 79.7, "w_fixed": 0.366, "w_mobile": 0.634}, {"month": "2023-05", "value": 69.9388, "source": "doxa", "uba_fixed": 58.4, "uba_mobile": 76.6, "w_fixed": 0.366, "w_mobile": 0.634}, {"month": "2023-06", "value": 72.2564, "source": "doxa", "uba_fixed": 63.0, "uba_mobile": 77.6, "w_fixed": 0.366, "w_mobile": 0.634}, {"month": "2023-07", "value": 69.642, "source": "doxa", "uba_fixed": 61.4, "uba_mobile": 74.4, "w_fixed": 0.366, "w_mobile": 0.634}, {"month": "2023-09", "value": 71.1094, "source": "doxa", "uba_fixed": 59.0, "uba_mobile": 78.1, "w_fixed": 0.366, "w_mobile": 0.634}, {"month": "2023-10", "value": 73.3146, "source": "doxa", "uba_fixed": 62.6, "uba_mobile": 79.5, "w_fixed": 0.366, "w_mobile": 0.634}, {"month": "2023-11", "value": 72.9002, "source": "doxa", "uba_fixed": 63.2, "uba_mobile": 78.5, "w_fixed": 0.366, "w_mobile": 0.634}, {"month": "2023-12", "value": 70.876, "source": "doxa", "uba_fixed": 62.0, "uba_mobile": 76.0, "w_fixed": 0.366, "w_mobile": 0.634}, {"month": "2024-01", "value": 69.8977, "source": "doxa", "uba_fixed": 60.337, "uba_mobile": 75.7775, "w_fixed": 0.3808, "w_mobile": 0.6192}, {"month": "2024-02", "value": 65.9485, "source": "doxa", "uba_fixed": 58.3958, "uba_mobile": 70.5933, "w_fixed": 0.3808, "w_mobile": 0.6192}, {"month": "2024-03", "value": 68.7366, "source": "doxa", "uba_fixed": 59.9912, "uba_mobile": 74.115, "w_fixed": 0.3808, "w_mobile": 0.6192}, {"month": "2024-04", "value": 67.2008, "source": "doxa", "uba_fixed": 57.7797, "uba_mobile": 72.9946, "w_fixed": 0.3808, "w_mobile": 0.6192}, {"month": "2024-05", "value": 67.9324, "source": "doxa", "uba_fixed": 56.6886, "uba_mobile": 74.8473, "w_fixed": 0.3808, "w_mobile": 0.6192}, {"month": "2024-06", "value": 67.4376, "source": "doxa", "uba_fixed": 58.0329, "uba_mobile": 73.2213, "w_fixed": 0.3808, "w_mobile": 0.6192}, {"month": "2024-07", "value": 67.1921, "source": "doxa", "uba_fixed": 59.0669, "uba_mobile": 72.189, "w_fixed": 0.3808, "w_mobile": 0.6192}, {"month": "2024-08", "value": 67.1869, "source": "doxa", "uba_fixed": 60.004, "uba_mobile": 71.6044, "w_fixed": 0.3808, "w_mobile": 0.6192}, {"month": "2024-09", "value": 65.0662, "source": "doxa", "uba_fixed": 57.5008, "uba_mobile": 69.7188, "w_fixed": 0.3808, "w_mobile": 0.6192}, {"month": "2024-10", "value": 65.93, "source": "doxa", "uba_fixed": 57.2566, "uba_mobile": 71.264, "w_fixed": 0.3808, "w_mobile": 0.6192}, {"month": "2024-11", "value": 64.7272, "source": "doxa", "uba_fixed": 57.7189, "uba_mobile": 69.0371, "w_fixed": 0.3808, "w_mobile": 0.6192}, {"month": "2024-12", "value": 64.8503, "source": "doxa", "uba_fixed": 55.4924, "uba_mobile": 70.6053, "w_fixed": 0.3808, "w_mobile": 0.6192}, {"month": "2025-01", "value": 66.1975, "source": "doxa", "uba_fixed": 58.8666, "uba_mobile": 70.7327, "w_fixed": 0.3822, "w_mobile": 0.6178}, {"month": "2025-02", "value": 63.7486, "source": "doxa", "uba_fixed": 58.6604, "uba_mobile": 66.8964, "w_fixed": 0.3822, "w_mobile": 0.6178}, {"month": "2025-03", "value": 62.874, "source": "doxa", "uba_fixed": 55.3004, "uba_mobile": 67.5593, "w_fixed": 0.3822, "w_mobile": 0.6178}, {"month": "2025-04", "value": 64.3327, "source": "doxa", "uba_fixed": 57.3662, "uba_mobile": 68.6425, "w_fixed": 0.3822, "w_mobile": 0.6178}, {"month": "2025-05", "value": 61.725, "source": "doxa", "uba_fixed": 54.143, "uba_mobile": 66.4156, "w_fixed": 0.3822, "w_mobile": 0.6178}, {"month": "2025-06", "value": 64.2312, "source": "doxa", "uba_fixed": 56.8237, "uba_mobile": 68.8139, "w_fixed": 0.3822, "w_mobile": 0.6178}, {"month": "2025-07", "value": 65.0976, "source": "doxa", "uba_fixed": 56.6893, "uba_mobile": 70.2993, "w_fixed": 0.3822, "w_mobile": 0.6178}, {"month": "2025-08", "value": 64.1675, "source": "doxa", "uba_fixed": 57.6974, "uba_mobile": 68.1701, "w_fixed": 0.3822, "w_mobile": 0.6178}, {"month": "2025-09", "value": 64.3222, "source": "doxa", "uba_fixed": 57.0165, "uba_mobile": 68.8418, "w_fixed": 0.3822, "w_mobile": 0.6178}, {"month": "2025-10", "value": 64.6426, "source": "doxa", "uba_fixed": 57.6629, "uba_mobile": 68.9606, "w_fixed": 0.3822, "w_mobile": 0.6178}, {"month": "2025-11", "value": 65.2902, "source": "doxa", "uba_fixed": 59.1562, "uba_mobile": 69.0851, "w_fixed": 0.3822, "w_mobile": 0.6178}, {"month": "2025-12", "value": 61.5425, "source": "doxa", "uba_fixed": 54.2074, "uba_mobile": 66.0804, "w_fixed": 0.3822, "w_mobile": 0.6178}, {"month": "2026-01", "value": 65.0241, "source": "kantar_adj", "uba_kantar_raw": 56.75, "k_factor": 1.1458, "w_fixed": null, "w_mobile": null}, {"month": "2026-02", "value": 60.4409, "source": "kantar_adj", "uba_kantar_raw": 52.75, "k_factor": 1.1458, "w_fixed": null, "w_mobile": null}, {"month": "2026-03", "value": 66.0049, "source": "kantar_adj", "uba_kantar_raw": 57.606, "k_factor": 1.1458, "w_fixed": null, "w_mobile": null}, {"month": "2026-04", "value": 61.2923, "source": "kantar_adj", "uba_kantar_raw": 53.493, "k_factor": 1.1458, "w_fixed": null, "w_mobile": null}, {"month": "2026-05", "value": 63.5919, "source": "kantar_adj", "uba_kantar_raw": 55.5, "k_factor": 1.1458, "w_fixed": null, "w_mobile": null}, {"month": "2026-06", "value": 58.5758, "source": "kantar_adj", "uba_kantar_raw": 51.1222, "k_factor": 1.1458, "w_fixed": null, "w_mobile": null}, {"month": "2026-07", "value": 62.0832, "source": "kantar_adj", "uba_kantar_raw": 54.1833, "k_factor": 1.1458, "w_fixed": null, "w_mobile": null}], "Iliad": [{"month": "2018-07", "value": 30.9184, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 30.9184, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2018-09", "value": 41.7075, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 41.7075, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2018-10", "value": 44.5188, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 44.5188, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2018-11", "value": 43.9888, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 43.9888, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2018-12", "value": 46.0543, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 46.0543, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2019-01", "value": 47.2549, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 47.2549, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2019-02", "value": 48.4794, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 48.4794, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2019-03", "value": 45.9082, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 45.9082, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2019-04", "value": 47.9042, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 47.9042, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2019-05", "value": 49.6047, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 49.6047, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2019-06", "value": 48.8048, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 48.8048, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2019-07", "value": 53.4653, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 53.4653, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2019-09", "value": 54.7, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 54.7, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2019-10", "value": 55.6886, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 55.6886, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2019-11", "value": 54.1833, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 54.1833, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2019-12", "value": 59.9, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 59.9, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2020-01", "value": 50.8, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 50.8, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2020-02", "value": 55.0, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 55.0, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2020-03", "value": 54.9801, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 54.9801, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2020-04", "value": 55.9, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 55.9, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2020-05", "value": 49.6, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 49.6, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2020-06", "value": 56.705, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 56.705, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2020-07", "value": 61.2, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 61.2, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2020-09", "value": 53.6, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 53.6, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2020-10", "value": 52.0958, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 52.0958, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2020-11", "value": 54.6351, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 54.6351, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2020-12", "value": 48.4, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 48.4, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2021-01", "value": 46.6, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 46.6, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2021-02", "value": 49.1569, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 49.1569, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2021-03", "value": 47.4, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 47.4, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2021-04", "value": 49.5, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 49.5, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2021-05", "value": 45.3, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 45.3, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2021-06", "value": 50.5, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 50.5, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2021-07", "value": 47.9, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 47.9, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2021-09", "value": 50.8, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 50.8, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2021-10", "value": 49.3, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 49.3, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2021-11", "value": 50.9, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 50.9, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2021-12", "value": 47.5, "source": "doxa_mobile_only", "uba_fixed": null, "uba_mobile": 47.5, "w_fixed": 0.0, "w_mobile": 1.0}, {"month": "2022-01", "value": 47.848, "source": "doxa", "uba_fixed": 13.2, "uba_mobile": 48.7, "w_fixed": 0.024, "w_mobile": 0.976}, {"month": "2022-02", "value": 52.9792, "source": "doxa", "uba_fixed": 19.6, "uba_mobile": 53.8, "w_fixed": 0.024, "w_mobile": 0.976}, {"month": "2022-03", "value": 48.5984, "source": "doxa", "uba_fixed": 16.0, "uba_mobile": 49.4, "w_fixed": 0.024, "w_mobile": 0.976}, {"month": "2022-04", "value": 52.9648, "source": "doxa", "uba_fixed": 19.0, "uba_mobile": 53.8, "w_fixed": 0.024, "w_mobile": 0.976}, {"month": "2022-05", "value": 49.7936, "source": "doxa", "uba_fixed": 17.0, "uba_mobile": 50.6, "w_fixed": 0.024, "w_mobile": 0.976}, {"month": "2022-06", "value": 48.3936, "source": "doxa", "uba_fixed": 15.6, "uba_mobile": 49.2, "w_fixed": 0.024, "w_mobile": 0.976}, {"month": "2022-07", "value": 50.848, "source": "doxa", "uba_fixed": 16.2, "uba_mobile": 51.7, "w_fixed": 0.024, "w_mobile": 0.976}, {"month": "2022-09", "value": 50.7648, "source": "doxa", "uba_fixed": 16.8, "uba_mobile": 51.6, "w_fixed": 0.024, "w_mobile": 0.976}, {"month": "2022-10", "value": 48.408, "source": "doxa", "uba_fixed": 16.2, "uba_mobile": 49.2, "w_fixed": 0.024, "w_mobile": 0.976}, {"month": "2022-11", "value": 47.616, "source": "doxa", "uba_fixed": 19.8, "uba_mobile": 48.3, "w_fixed": 0.024, "w_mobile": 0.976}, {"month": "2022-12", "value": 47.0688, "source": "doxa", "uba_fixed": 21.4, "uba_mobile": 47.7, "w_fixed": 0.024, "w_mobile": 0.976}, {"month": "2023-01", "value": 44.5128, "source": "doxa", "uba_fixed": 21.8, "uba_mobile": 47.0, "w_fixed": 0.0987, "w_mobile": 0.9013}, {"month": "2023-02", "value": 44.5831, "source": "doxa", "uba_fixed": 21.6, "uba_mobile": 47.1, "w_fixed": 0.0987, "w_mobile": 0.9013}, {"month": "2023-03", "value": 45.8819, "source": "doxa", "uba_fixed": 23.8, "uba_mobile": 48.3, "w_fixed": 0.0987, "w_mobile": 0.9013}, {"month": "2023-04", "value": 43.3463, "source": "doxa", "uba_fixed": 18.2, "uba_mobile": 46.1, "w_fixed": 0.0987, "w_mobile": 0.9013}, {"month": "2023-05", "value": 44.572, "source": "doxa", "uba_fixed": 22.4, "uba_mobile": 47.0, "w_fixed": 0.0987, "w_mobile": 0.9013}, {"month": "2023-06", "value": 44.9496, "source": "doxa", "uba_fixed": 24.4, "uba_mobile": 47.2, "w_fixed": 0.0987, "w_mobile": 0.9013}, {"month": "2023-07", "value": 46.5128, "source": "doxa", "uba_fixed": 23.8, "uba_mobile": 49.0, "w_fixed": 0.0987, "w_mobile": 0.9013}, {"month": "2023-09", "value": 46.2818, "source": "doxa", "uba_fixed": 24.2, "uba_mobile": 48.7, "w_fixed": 0.0987, "w_mobile": 0.9013}, {"month": "2023-10", "value": 47.5154, "source": "doxa", "uba_fixed": 23.0, "uba_mobile": 50.2, "w_fixed": 0.0987, "w_mobile": 0.9013}, {"month": "2023-11", "value": 46.2003, "source": "doxa", "uba_fixed": 25.2, "uba_mobile": 48.5, "w_fixed": 0.0987, "w_mobile": 0.9013}, {"month": "2023-12", "value": 45.7779, "source": "doxa", "uba_fixed": 26.4, "uba_mobile": 47.9, "w_fixed": 0.0987, "w_mobile": 0.9013}, {"month": "2024-01", "value": 51.7292, "source": "doxa", "uba_fixed": 29.2663, "uba_mobile": 54.6137, "w_fixed": 0.1138, "w_mobile": 0.8862}, {"month": "2024-02", "value": 51.7565, "source": "doxa", "uba_fixed": 30.9541, "uba_mobile": 54.4278, "w_fixed": 0.1138, "w_mobile": 0.8862}, {"month": "2024-03", "value": 51.6424, "source": "doxa", "uba_fixed": 32.5312, "uba_mobile": 54.0965, "w_fixed": 0.1138, "w_mobile": 0.8862}, {"month": "2024-04", "value": 50.2075, "source": "doxa", "uba_fixed": 32.1322, "uba_mobile": 52.5286, "w_fixed": 0.1138, "w_mobile": 0.8862}, {"month": "2024-05", "value": 56.5098, "source": "doxa", "uba_fixed": 31.7218, "uba_mobile": 59.693, "w_fixed": 0.1138, "w_mobile": 0.8862}, {"month": "2024-06", "value": 51.0184, "source": "doxa", "uba_fixed": 33.9578, "uba_mobile": 53.2093, "w_fixed": 0.1138, "w_mobile": 0.8862}, {"month": "2024-07", "value": 54.1866, "source": "doxa", "uba_fixed": 32.2406, "uba_mobile": 57.0048, "w_fixed": 0.1138, "w_mobile": 0.8862}, {"month": "2024-08", "value": 51.3611, "source": "doxa", "uba_fixed": 30.0233, "uba_mobile": 54.1012, "w_fixed": 0.1138, "w_mobile": 0.8862}, {"month": "2024-09", "value": 54.9063, "source": "doxa", "uba_fixed": 32.8977, "uba_mobile": 57.7325, "w_fixed": 0.1138, "w_mobile": 0.8862}, {"month": "2024-10", "value": 52.3307, "source": "doxa", "uba_fixed": 33.009, "uba_mobile": 54.8119, "w_fixed": 0.1138, "w_mobile": 0.8862}, {"month": "2024-11", "value": 53.426, "source": "doxa", "uba_fixed": 33.9861, "uba_mobile": 55.9224, "w_fixed": 0.1138, "w_mobile": 0.8862}, {"month": "2024-12", "value": 51.9405, "source": "doxa", "uba_fixed": 33.1443, "uba_mobile": 54.3542, "w_fixed": 0.1138, "w_mobile": 0.8862}, {"month": "2025-01", "value": 50.0185, "source": "doxa", "uba_fixed": 34.9369, "uba_mobile": 52.4838, "w_fixed": 0.1405, "w_mobile": 0.8595}, {"month": "2025-02", "value": 53.893, "source": "doxa", "uba_fixed": 37.5764, "uba_mobile": 56.5602, "w_fixed": 0.1405, "w_mobile": 0.8595}, {"month": "2025-03", "value": 50.9586, "source": "doxa", "uba_fixed": 36.1968, "uba_mobile": 53.3717, "w_fixed": 0.1405, "w_mobile": 0.8595}, {"month": "2025-04", "value": 52.0221, "source": "doxa", "uba_fixed": 35.3475, "uba_mobile": 54.7479, "w_fixed": 0.1405, "w_mobile": 0.8595}, {"month": "2025-05", "value": 51.3926, "source": "doxa", "uba_fixed": 34.0855, "uba_mobile": 54.2218, "w_fixed": 0.1405, "w_mobile": 0.8595}, {"month": "2025-06", "value": 52.4497, "source": "doxa", "uba_fixed": 34.2728, "uba_mobile": 55.421, "w_fixed": 0.1405, "w_mobile": 0.8595}, {"month": "2025-07", "value": 53.1985, "source": "doxa", "uba_fixed": 35.1247, "uba_mobile": 56.153, "w_fixed": 0.1405, "w_mobile": 0.8595}, {"month": "2025-08", "value": 48.2908, "source": "doxa", "uba_fixed": 34.2462, "uba_mobile": 50.5866, "w_fixed": 0.1405, "w_mobile": 0.8595}, {"month": "2025-09", "value": 51.8663, "source": "doxa", "uba_fixed": 35.6049, "uba_mobile": 54.5245, "w_fixed": 0.1405, "w_mobile": 0.8595}, {"month": "2025-10", "value": 48.397, "source": "doxa", "uba_fixed": 32.8924, "uba_mobile": 50.9315, "w_fixed": 0.1405, "w_mobile": 0.8595}, {"month": "2025-11", "value": 52.0324, "source": "doxa", "uba_fixed": 34.4242, "uba_mobile": 54.9108, "w_fixed": 0.1405, "w_mobile": 0.8595}, {"month": "2025-12", "value": 48.4459, "source": "doxa", "uba_fixed": 35.6292, "uba_mobile": 50.5409, "w_fixed": 0.1405, "w_mobile": 0.8595}, {"month": "2026-01", "value": 52.094, "source": "kantar_adj", "uba_kantar_raw": 46.5, "k_factor": 1.1203, "w_fixed": null, "w_mobile": null}, {"month": "2026-02", "value": 47.8928, "source": "kantar_adj", "uba_kantar_raw": 42.75, "k_factor": 1.1203, "w_fixed": null, "w_mobile": null}, {"month": "2026-03", "value": 48.8909, "source": "kantar_adj", "uba_kantar_raw": 43.6409, "k_factor": 1.1203, "w_fixed": null, "w_mobile": null}, {"month": "2026-04", "value": 43.6045, "source": "kantar_adj", "uba_kantar_raw": 38.9222, "k_factor": 1.1203, "w_fixed": null, "w_mobile": null}, {"month": "2026-05", "value": 49.2932, "source": "kantar_adj", "uba_kantar_raw": 44.0, "k_factor": 1.1203, "w_fixed": null, "w_mobile": null}, {"month": "2026-06", "value": 45.259, "source": "kantar_adj", "uba_kantar_raw": 40.399, "k_factor": 1.1203, "w_fixed": null, "w_mobile": null}, {"month": "2026-07", "value": 50.2126, "source": "kantar_adj", "uba_kantar_raw": 44.8207, "k_factor": 1.1203, "w_fixed": null, "w_mobile": null}]}, "brand_weights": {"Fastweb": {"2018": {"fixed": 0.9797, "mobile": 0.0203}, "2019": {"fixed": 0.9667, "mobile": 0.0333}, "2020": {"fixed": 0.9557, "mobile": 0.0443}, "2021": {"fixed": 0.9363, "mobile": 0.0637}, "2022": {"fixed": 0.9057, "mobile": 0.0943}, "2023": {"fixed": 0.7326, "mobile": 0.2674}, "2024": {"fixed": 0.7377, "mobile": 0.2623}, "2025": {"fixed": 0.7418, "mobile": 0.2582}, "2026": {"fixed": 0.7238, "mobile": 0.2762}}, "TIM": {"2018": {"fixed": 0.6236, "mobile": 0.3764}, "2019": {"fixed": 0.6153, "mobile": 0.3847}, "2020": {"fixed": 0.6128, "mobile": 0.3872}, "2021": {"fixed": 0.6188, "mobile": 0.3812}, "2022": {"fixed": 0.6182, "mobile": 0.3818}, "2023": {"fixed": 0.6119, "mobile": 0.3881}, "2024": {"fixed": 0.5919, "mobile": 0.4081}, "2025": {"fixed": 0.5935, "mobile": 0.4065}, "2026": {"fixed": 0.5971, "mobile": 0.4029}}, "Vodafone": {"2018": {"fixed": 0.397, "mobile": 0.603}, "2019": {"fixed": 0.3981, "mobile": 0.6019}, "2020": {"fixed": 0.4113, "mobile": 0.5887}, "2021": {"fixed": 0.4196, "mobile": 0.5804}, "2022": {"fixed": 0.4264, "mobile": 0.5736}, "2023": {"fixed": 0.4304, "mobile": 0.5696}, "2024": {"fixed": 0.4355, "mobile": 0.5645}, "2025": {"fixed": 0.4375, "mobile": 0.5625}, "2026": {"fixed": 0.4321, "mobile": 0.5679}}, "WindTre": {"2018": {"fixed": 0.3066, "mobile": 0.6934}, "2019": {"fixed": 0.3258, "mobile": 0.6742}, "2020": {"fixed": 0.3357, "mobile": 0.6643}, "2021": {"fixed": 0.3473, "mobile": 0.6527}, "2022": {"fixed": 0.3584, "mobile": 0.6416}, "2023": {"fixed": 0.366, "mobile": 0.634}, "2024": {"fixed": 0.3808, "mobile": 0.6192}, "2025": {"fixed": 0.3822, "mobile": 0.6178}, "2026": {"fixed": 0.3808, "mobile": 0.6192}}, "Iliad": {"2018": {"fixed": 0.0, "mobile": 1.0}, "2019": {"fixed": 0.0, "mobile": 1.0}, "2020": {"fixed": 0.0, "mobile": 1.0}, "2021": {"fixed": 0.0, "mobile": 1.0}, "2022": {"fixed": 0.024, "mobile": 0.976}, "2023": {"fixed": 0.0987, "mobile": 0.9013}, "2024": {"fixed": 0.1138, "mobile": 0.8862}, "2025": {"fixed": 0.1405, "mobile": 0.8595}, "2026": {"fixed": 0.1406, "mobile": 0.8594}}}, "correction_factors": {"Fastweb": 1.2175, "TIM": 1.0719, "Vodafone": 1.1382, "WindTre": 1.1458, "Iliad": 1.1203}, "agcom_sources": ["https://temi.camera.it/leg19/post/OCD15-13653", "https://www.mondomobileweb.it/175063-osservatorio-agcom-01-2020/", "https://temi.camera.it/leg18/post/OCD15_14333", "https://www.universofree.com/2022/05/03/agcom-osservatorio-comunicazioni-31-dicembre-2021/", "https://www.mondomobileweb.it/257130-osservatorio-agcom-1-2023/", "https://www.mondomobileweb.it/257332-telefonia-fissa-le-quote-di-mercato/", "https://www.mondo3.com/italia-mobile/2024-05-02-dati-italia-2023-osservatorio-agcom.html", "https://www.agcom.it/comunicazione/comunicati-stampa/comunicato-stampa-34", "https://www.mondomobileweb.it/300900-telefonia-fissa-quote-di-mercato/", "https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n1-2026", "https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n-2-2026", "https://www.startmag.it/innovazione/tim-vodafone-wind-tre-iliad-poste-chi-sale-e-chi-scende-nella-telefonia-mobile-report-agcom-2/", "https://www.mondomobileweb.it/204274-telefonia-mobile-tim-prima-posizione-iliad-10-7-quota-mercato-consumer/", "https://www.mondomobileweb.it/234253-osservatorio-agcom-iliad-raggiunge-8-sim-totali/", "https://www.mondomobileweb.it/279296-telefonia-mobile-quote-di-mercato-fine-2023/", "https://www.mondomobileweb.it/293381-telefonia-mobile-quote-di-mercato-a-settembre-2024/"]};
+const UBA_METHODOLOGY = {"description": "UBA armonizzato fisso+mobile per operatore TLC Italia 2018-2026", "method": {"step1_brand_weights": {"formula": "W_fisso = CB_fisso / (CB_fisso + CB_mobile); W_mobile = 1 - W_fisso", "data_source": "AGCOM Osservatori Comunicazioni (BB/UBB accesses + SIM Human)", "interpolation": "Per anni con dati mancanti, interpolazione lineare"}, "step2_uba_combined": {"formula": "UBA_combined = UBA_fisso * W_fisso + UBA_mobile * W_mobile", "data_source": "File Excel interno (Doxa/Merkle) - fogli WIRELINE AVG_Mensile e MOBILE_AVG Mensile", "period": "2018-01 to 2025-12"}, "step3_kantar_raccordo": {"formula": "k = avg(UBA_doxa_ott-dic2025) / avg(UBA_kantar_gen-mar2026); UBA_adj = UBA_kantar_raw * k", "rationale": "I dati 2026 sono Kantar (metodo diverso da Doxa/Merkle). Il fattore k raccorda le due serie per garantire continuit\u00e0.", "period": "2026-01 onwards"}}, "notes": {"Fastweb": "Storicamente brand fisso. Mobile MVNO dal 2020, quota separata AGCOM solo dal Q4 2023. Pre-2023: stima <1.5%", "Iliad": "100% mobile fino a gen 2022. Fisso lanciato gen 2022. Quota fisso trascurabile 2022 (<0.5%), ~1.5% 2023, ~1.9% 2024", "Vodafone_post2025": "Incorporata in Fastweb S.p.A. il 1 gen 2026. Dal 2025 AGCOM riporta solo 'Fastweb+Vodafone'. Split 2025-2026 stimato proporzionalmente al dato separato dic 2024 (Fastweb 13.5% fisso / 4.8% mobile, Vodafone 16.2% fisso / 21.0% mobile)", "kantar_2026": "Dal 2026 i KPI nel file Excel sono Kantar brand totale (non ponderati fisso/mobile). Colonna A identifica le righe con '2026 KANTAR con awareness unica'"}, "agcom_fixed_data": {"2018": {"TIM": 43.9, "Vodafone": 15.8, "Fastweb": 14.5, "WindTre": 14.5, "Iliad": 0.0}, "2019": {"TIM": 43.5, "Vodafone": 16.4, "Fastweb": 14.5, "WindTre": 14.5, "Iliad": 0.0}, "2020": {"TIM": 42.1, "Vodafone": 16.7, "Fastweb": 15.1, "WindTre": 14.0, "Iliad": 0.0}, "2021": {"TIM": 41.4, "Vodafone": 16.7, "Fastweb": 14.7, "WindTre": 14.1, "Iliad": 0.0}, "2022": {"TIM": 40.0, "Vodafone": 16.8, "Fastweb": 14.4, "WindTre": 14.3, "Iliad": 0.3}, "2023": {"TIM": 38.0, "Vodafone": 16.4, "Fastweb": 13.7, "WindTre": 14.2, "Iliad": 1.5}, "2024": {"TIM": 33.5, "Vodafone": 16.2, "Fastweb": 13.5, "WindTre": 14.7, "Iliad": 1.9}, "2025": {"TIM": 32.7, "Vodafone": 16.1, "Fastweb": 13.5, "WindTre": 14.6, "Iliad": 2.6}, "2026": {"TIM": 32.6, "Vodafone": 15.6, "Fastweb": 13.1, "WindTre": 14.7, "Iliad": 2.7}}, "agcom_mobile_data": {"2018": {"TIM": 26.5, "Vodafone": 24.0, "Fastweb": 0.3, "WindTre": 32.8, "Iliad": 5.3}, "2019": {"TIM": 27.2, "Vodafone": 24.8, "Fastweb": 0.5, "WindTre": 30.0, "Iliad": 5.3}, "2020": {"TIM": 26.6, "Vodafone": 23.9, "Fastweb": 0.7, "WindTre": 27.7, "Iliad": 9.3}, "2021": {"TIM": 25.5, "Vodafone": 23.1, "Fastweb": 1.0, "WindTre": 26.5, "Iliad": 10.9}, "2022": {"TIM": 24.7, "Vodafone": 22.6, "Fastweb": 1.5, "WindTre": 25.6, "Iliad": 12.2}, "2023": {"TIM": 24.1, "Vodafone": 21.7, "Fastweb": 5.0, "WindTre": 24.6, "Iliad": 13.7}, "2024": {"TIM": 23.1, "Vodafone": 21.0, "Fastweb": 4.8, "WindTre": 23.9, "Iliad": 14.8}, "2025": {"TIM": 22.4, "Vodafone": 20.7, "Fastweb": 4.7, "WindTre": 23.6, "Iliad": 15.9}, "2026": {"TIM": 22.0, "Vodafone": 20.5, "Fastweb": 5.0, "WindTre": 23.9, "Iliad": 16.5}}, "brand_weights_by_year": {"Fastweb": {"2018": {"fixed": 0.9797, "mobile": 0.0203, "cb_fixed_pct": 14.5, "cb_mobile_pct": 0.3}, "2019": {"fixed": 0.9667, "mobile": 0.0333, "cb_fixed_pct": 14.5, "cb_mobile_pct": 0.5}, "2020": {"fixed": 0.9557, "mobile": 0.0443, "cb_fixed_pct": 15.1, "cb_mobile_pct": 0.7}, "2021": {"fixed": 0.9363, "mobile": 0.0637, "cb_fixed_pct": 14.7, "cb_mobile_pct": 1.0}, "2022": {"fixed": 0.9057, "mobile": 0.0943, "cb_fixed_pct": 14.4, "cb_mobile_pct": 1.5}, "2023": {"fixed": 0.7326, "mobile": 0.2674, "cb_fixed_pct": 13.7, "cb_mobile_pct": 5.0}, "2024": {"fixed": 0.7377, "mobile": 0.2623, "cb_fixed_pct": 13.5, "cb_mobile_pct": 4.8}, "2025": {"fixed": 0.7418, "mobile": 0.2582, "cb_fixed_pct": 13.5, "cb_mobile_pct": 4.7}, "2026": {"fixed": 0.7238, "mobile": 0.2762, "cb_fixed_pct": 13.1, "cb_mobile_pct": 5.0}}, "TIM": {"2018": {"fixed": 0.6236, "mobile": 0.3764, "cb_fixed_pct": 43.9, "cb_mobile_pct": 26.5}, "2019": {"fixed": 0.6153, "mobile": 0.3847, "cb_fixed_pct": 43.5, "cb_mobile_pct": 27.2}, "2020": {"fixed": 0.6128, "mobile": 0.3872, "cb_fixed_pct": 42.1, "cb_mobile_pct": 26.6}, "2021": {"fixed": 0.6188, "mobile": 0.3812, "cb_fixed_pct": 41.4, "cb_mobile_pct": 25.5}, "2022": {"fixed": 0.6182, "mobile": 0.3818, "cb_fixed_pct": 40.0, "cb_mobile_pct": 24.7}, "2023": {"fixed": 0.6119, "mobile": 0.3881, "cb_fixed_pct": 38.0, "cb_mobile_pct": 24.1}, "2024": {"fixed": 0.5919, "mobile": 0.4081, "cb_fixed_pct": 33.5, "cb_mobile_pct": 23.1}, "2025": {"fixed": 0.5935, "mobile": 0.4065, "cb_fixed_pct": 32.7, "cb_mobile_pct": 22.4}, "2026": {"fixed": 0.5971, "mobile": 0.4029, "cb_fixed_pct": 32.6, "cb_mobile_pct": 22.0}}, "Vodafone": {"2018": {"fixed": 0.397, "mobile": 0.603, "cb_fixed_pct": 15.8, "cb_mobile_pct": 24.0}, "2019": {"fixed": 0.3981, "mobile": 0.6019, "cb_fixed_pct": 16.4, "cb_mobile_pct": 24.8}, "2020": {"fixed": 0.4113, "mobile": 0.5887, "cb_fixed_pct": 16.7, "cb_mobile_pct": 23.9}, "2021": {"fixed": 0.4196, "mobile": 0.5804, "cb_fixed_pct": 16.7, "cb_mobile_pct": 23.1}, "2022": {"fixed": 0.4264, "mobile": 0.5736, "cb_fixed_pct": 16.8, "cb_mobile_pct": 22.6}, "2023": {"fixed": 0.4304, "mobile": 0.5696, "cb_fixed_pct": 16.4, "cb_mobile_pct": 21.7}, "2024": {"fixed": 0.4355, "mobile": 0.5645, "cb_fixed_pct": 16.2, "cb_mobile_pct": 21.0}, "2025": {"fixed": 0.4375, "mobile": 0.5625, "cb_fixed_pct": 16.1, "cb_mobile_pct": 20.7}, "2026": {"fixed": 0.4321, "mobile": 0.5679, "cb_fixed_pct": 15.6, "cb_mobile_pct": 20.5}}, "WindTre": {"2018": {"fixed": 0.3066, "mobile": 0.6934, "cb_fixed_pct": 14.5, "cb_mobile_pct": 32.8}, "2019": {"fixed": 0.3258, "mobile": 0.6742, "cb_fixed_pct": 14.5, "cb_mobile_pct": 30.0}, "2020": {"fixed": 0.3357, "mobile": 0.6643, "cb_fixed_pct": 14.0, "cb_mobile_pct": 27.7}, "2021": {"fixed": 0.3473, "mobile": 0.6527, "cb_fixed_pct": 14.1, "cb_mobile_pct": 26.5}, "2022": {"fixed": 0.3584, "mobile": 0.6416, "cb_fixed_pct": 14.3, "cb_mobile_pct": 25.6}, "2023": {"fixed": 0.366, "mobile": 0.634, "cb_fixed_pct": 14.2, "cb_mobile_pct": 24.6}, "2024": {"fixed": 0.3808, "mobile": 0.6192, "cb_fixed_pct": 14.7, "cb_mobile_pct": 23.9}, "2025": {"fixed": 0.3822, "mobile": 0.6178, "cb_fixed_pct": 14.6, "cb_mobile_pct": 23.6}, "2026": {"fixed": 0.3808, "mobile": 0.6192, "cb_fixed_pct": 14.7, "cb_mobile_pct": 23.9}}, "Iliad": {"2018": {"fixed": 0.0, "mobile": 1.0, "cb_fixed_pct": 0.0, "cb_mobile_pct": 5.3}, "2019": {"fixed": 0.0, "mobile": 1.0, "cb_fixed_pct": 0.0, "cb_mobile_pct": 5.3}, "2020": {"fixed": 0.0, "mobile": 1.0, "cb_fixed_pct": 0.0, "cb_mobile_pct": 9.3}, "2021": {"fixed": 0.0, "mobile": 1.0, "cb_fixed_pct": 0.0, "cb_mobile_pct": 10.9}, "2022": {"fixed": 0.024, "mobile": 0.976, "cb_fixed_pct": 0.3, "cb_mobile_pct": 12.2}, "2023": {"fixed": 0.0987, "mobile": 0.9013, "cb_fixed_pct": 1.5, "cb_mobile_pct": 13.7}, "2024": {"fixed": 0.1138, "mobile": 0.8862, "cb_fixed_pct": 1.9, "cb_mobile_pct": 14.8}, "2025": {"fixed": 0.1405, "mobile": 0.8595, "cb_fixed_pct": 2.6, "cb_mobile_pct": 15.9}, "2026": {"fixed": 0.1406, "mobile": 0.8594, "cb_fixed_pct": 2.7, "cb_mobile_pct": 16.5}}}, "correction_factors": {"Fastweb": 1.2175, "TIM": 1.0719, "Vodafone": 1.1382, "WindTre": 1.1458, "Iliad": 1.1203}, "kantar_raccordo_detail": {"Fastweb": {"doxa_last3_months": ["2025-10", "2025-11", "2025-12"], "kantar_first3_months": ["2026-01", "2026-02", "2026-03"], "k_factor": 1.2175}, "TIM": {"doxa_last3_months": ["2025-10", "2025-11", "2025-12"], "kantar_first3_months": ["2026-01", "2026-02", "2026-03"], "k_factor": 1.0719}, "Vodafone": {"doxa_last3_months": ["2025-10", "2025-11", "2025-12"], "kantar_first3_months": ["2026-01", "2026-02", "2026-03"], "k_factor": 1.1382}, "WindTre": {"doxa_last3_months": ["2025-10", "2025-11", "2025-12"], "kantar_first3_months": ["2026-01", "2026-02", "2026-03"], "k_factor": 1.1458}, "Iliad": {"doxa_last3_months": ["2025-10", "2025-11", "2025-12"], "kantar_first3_months": ["2026-01", "2026-02", "2026-03"], "k_factor": 1.1203}}, "sources": {"agcom_fixed": "agcom_fisso_2018_2026.md (subtask st1)", "agcom_mobile": "agcom_mobile_data.md (subtask st2)", "kpi_excel": "Brand_KPI_S_FW_e_competition_2018_2024_WIRELINE_+_MOBILE_smanettato.xlsx", "agcom_urls": ["https://temi.camera.it/leg19/post/OCD15-13653", "https://www.mondomobileweb.it/175063-osservatorio-agcom-01-2020/", "https://temi.camera.it/leg18/post/OCD15_14333", "https://www.universofree.com/2022/05/03/agcom-osservatorio-comunicazioni-31-dicembre-2021/", "https://www.mondomobileweb.it/257130-osservatorio-agcom-1-2023/", "https://www.mondomobileweb.it/257332-telefonia-fissa-le-quote-di-mercato/", "https://www.mondo3.com/italia-mobile/2024-05-02-dati-italia-2023-osservatorio-agcom.html", "https://www.agcom.it/comunicazione/comunicati-stampa/comunicato-stampa-34", "https://www.mondomobileweb.it/300900-telefonia-fissa-quote-di-mercato/", "https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n1-2026", "https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n-2-2026", "https://www.startmag.it/innovazione/tim-vodafone-wind-tre-iliad-poste-chi-sale-e-chi-scende-nella-telefonia-mobile-report-agcom-2/", "https://www.mondomobileweb.it/204274-telefonia-mobile-tim-prima-posizione-iliad-10-7-quota-mercato-consumer/", "https://www.mondomobileweb.it/234253-osservatorio-agcom-iliad-raggiunge-8-sim-totali/", "https://www.mondomobileweb.it/279296-telefonia-mobile-quote-di-mercato-fine-2023/", "https://www.mondomobileweb.it/293381-telefonia-mobile-quote-di-mercato-a-settembre-2024/"]}};
+const ANNUAL_AVGS = {"Fastweb": {"2018": 58.16, "2019": 59.38, "2020": 59.79, "2021": 58.38, "2022": 50.71, "2023": 46.29, "2024": 50.26, "2025": 52.91, "2026": 55.19}, "TIM": {"2018": 93.39, "2019": 93.42, "2020": 93.26, "2021": 91.93, "2022": 90.21, "2023": 88.78, "2024": 83.44, "2025": 81.62, "2026": 79.61}, "Vodafone": {"2018": 84.32, "2019": 85.53, "2020": 85.44, "2021": 83.44, "2022": 81.71, "2023": 79.12, "2024": 74.61, "2025": 71.36, "2026": 68.34}, "WindTre": {"2018": 79.65, "2019": 79.5, "2020": 81.38, "2021": 78.59, "2022": 74.27, "2023": 72.37, "2024": 66.84, "2025": 64.01, "2026": 62.43}, "Iliad": {"2018": 41.44, "2019": 51.44, "2020": 53.9, "2021": 48.62, "2022": 49.57, "2023": 45.47, "2024": 52.58, "2025": 51.08, "2026": 48.18}};
+const BRAND_COLORS = {"Fastweb": "#FDC400", "TIM": "#004d9f", "Vodafone": "#E60000", "WindTre": "#6600cc", "Iliad": "#ff0032"};
+const BRANDS = ["Fastweb", "TIM", "Vodafone", "WindTre", "Iliad"];
+
+// ============================================================
+// UTILITY FUNCTIONS
+// ============================================================
+function getColor(brand, alpha=1) {
+  const c = BRAND_COLORS[brand];
+  if (!c) return 'rgba(100,100,100,' + alpha + ')';
+  const r = parseInt(c.slice(1,3),16);
+  const g = parseInt(c.slice(3,5),16);
+  const b = parseInt(c.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+// Parse YYYY-MM to JS Date label
+function monthLabel(m) {
+  const [y, mo] = m.split('-');
+  const months = ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+  return months[parseInt(mo)-1] + ' ' + y;
+}
+
+// ============================================================
+// WEIGHTS TABLE
+// ============================================================
+function buildWeightsTable() {
+  const years = ['2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+  const tbody = document.getElementById('weights-tbody');
+  const bw = UBA_METHODOLOGY.brand_weights_by_year;
+  BRANDS.forEach(brand => {
+    const tr = document.createElement('tr');
+    let html = `<td class="brand-name"><span class="brand-dot" style="background:${BRAND_COLORS[brand]}"></span>${brand}</td>`;
+    years.forEach(yr => {
+      const d = bw[brand] && bw[brand][yr];
+      if (d) {
+        const pctF = Math.round(d.fixed * 100);
+        const pctM = Math.round(d.mobile * 100);
+        const col = d.fixed > 0.6 ? '#1a7a1a' : (d.fixed < 0.35 ? '#c00' : '#333');
+        html += `<td style="color:${col};font-weight:500;">${pctF}%<span style="color:#aaa;font-size:0.75rem;font-weight:400;"> F<br>${pctM}% M</span></td>`;
+      } else {
+        html += `<td style="color:#ccc;">—</td>`;
+      }
+    });
+    tr.innerHTML = html;
+    tbody.appendChild(tr);
+  });
+}
+
+// ============================================================
+// CORRECTION TABLE
+// ============================================================
+function buildCorrTable() {
+  const cf = UBA_METHODOLOGY.correction_factors;
+  const kd = UBA_METHODOLOGY.kantar_raccordo_detail;
+  const tbody = document.getElementById('corr-tbody');
+  BRANDS.forEach(brand => {
+    const k = cf[brand];
+    const effect = ((k - 1)*100).toFixed(1);
+    const tr = document.createElement('tr');
+    const col = parseFloat(effect) > 0 ? '#1a7a1a' : '#c00';
+    tr.innerHTML = `
+      <td class="brand-name"><span class="brand-dot" style="background:${BRAND_COLORS[brand]}"></span>${brand}</td>
+      <td style="font-weight:600;">${k.toFixed(4)}</td>
+      <td style="color:${col};font-weight:600;">+${effect}%</td>
+      <td style="color:#666;">ott–dic 2025</td>
+      <td style="color:#666;">gen–mar 2026</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ============================================================
+// MAIN CHART (line chart with zones)
+// ============================================================
+function buildMainChart() {
+  // Build unified labels (all months)
+  const allMonths = [];
+  const seen = new Set();
+  BRANDS.forEach(brand => {
+    UBA_DATA.series[brand].forEach(item => {
+      if (!seen.has(item.month)) { seen.add(item.month); allMonths.push(item.month); }
+    });
+  });
+  allMonths.sort();
+
+  const datasets = BRANDS.map(brand => {
+    const seriesMap = {};
+    UBA_DATA.series[brand].forEach(item => seriesMap[item.month] = item);
+    const values = allMonths.map(m => {
+      const item = seriesMap[m];
+      return item ? item.value : null;
+    });
+    return {
+      label: brand,
+      data: values,
+      borderColor: BRAND_COLORS[brand],
+      backgroundColor: getColor(brand, 0.08),
+      borderWidth: 2,
+      pointRadius: 0,
+      pointHoverRadius: 5,
+      tension: 0.3,
+      spanGaps: false
+    };
+  });
+
+  // Find kantar start index
+  const kantarStart = allMonths.indexOf('2026-01');
+
+  // Legend
+  const leg = document.getElementById('main-legend');
+  BRANDS.forEach(brand => {
+    leg.innerHTML += `<span class="legend-item"><span class="legend-dot" style="background:${BRAND_COLORS[brand]}"></span>${brand}</span>`;
+  });
+
+  const ctx = document.getElementById('mainChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: { labels: allMonths.map(monthLabel), datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: (items) => items[0].label,
+            label: (item) => {
+              const brand = BRANDS[item.datasetIndex];
+              const month = allMonths[item.dataIndex];
+              const sItem = UBA_DATA.series[brand] && UBA_DATA.series[brand].find(x => x.month === month);
+              if (!sItem) return brand + ': N/D';
+              const source = sItem.source === 'kantar_adj' ? 'Kantar (raccordato)' : 'Doxa/Merkle';
+              const wF = sItem.w_fixed ? (sItem.w_fixed*100).toFixed(0)+'% fisso' : '';
+              const wM = sItem.w_mobile ? (sItem.w_mobile*100).toFixed(0)+'% mobile' : '';
+              return ` ${brand}: ${item.formattedValue} | ${source} | ${wF}, ${wM}`;
+            }
+          }
+        },
+        annotation: {
+          annotations: {
+            merkleZone: {
+              type: 'box',
+              xMin: 0, xMax: kantarStart - 1,
+              backgroundColor: 'rgba(253,196,0,0.04)',
+              borderWidth: 0,
+              label: { display: true, content: 'Merkle/Doxa', position: { x: 'start', y: 'start' }, color: '#aaa', font: { size: 10 } }
+            },
+            kantarZone: {
+              type: 'box',
+              xMin: kantarStart,
+              xMax: allMonths.length - 1,
+              backgroundColor: 'rgba(230,0,0,0.04)',
+              borderWidth: 0,
+              label: { display: true, content: 'Kantar 2026+', position: { x: 'start', y: 'start' }, color: '#aaa', font: { size: 10 } }
+            }
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { maxTicksLimit: 12, font: { size: 10 } }, grid: { display: false } },
+        y: { min: 30, max: 105, ticks: { font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.05)' } }
+      }
+    }
+  });
+}
+
+// ============================================================
+// BAR CHART (annual average)
+// ============================================================
+function buildBarChart() {
+  const years = ['2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+  const datasets = BRANDS.map(brand => {
+    return {
+      label: brand,
+      data: years.map(y => ANNUAL_AVGS[brand][y] || null),
+      backgroundColor: getColor(brand, 0.82),
+      borderColor: BRAND_COLORS[brand],
+      borderWidth: 1.5,
+      borderRadius: 3
+    };
+  });
+  const ctx = document.getElementById('barChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: { labels: years, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } },
+        tooltip: {
+          callbacks: {
+            label: (item) => ` ${item.dataset.label}: ${item.formattedValue}`
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: { min: 30, ticks: { font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.05)' } }
+      }
+    }
+  });
+}
+
+// ============================================================
+// FASTWEB FOCUS CHART
+// ============================================================
+function buildFastwWebChart() {
+  const fwSeries = UBA_DATA.series['Fastweb'];
+  const labels = fwSeries.map(d => monthLabel(d.month));
+  const values = fwSeries.map(d => d.value);
+
+  const annot2021 = fwSeries.findIndex(d => d.month === '2021-01');
+  const annot2024 = fwSeries.findIndex(d => d.month === '2024-06');
+  const kantarIdx = fwSeries.findIndex(d => d.month === '2026-01');
+
+  const ctx = document.getElementById('faswtwChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Fastweb UBA',
+        data: values,
+        borderColor: '#FDC400',
+        backgroundColor: 'rgba(253,196,0,0.12)',
+        borderWidth: 2.5,
+        fill: true,
+        pointRadius: 0,
+        pointHoverRadius: 6,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (item) => {
+              const d = fwSeries[item.dataIndex];
+              const src = d.source === 'kantar_adj' ? 'Kantar adj.' : 'Doxa';
+              return ` UBA: ${item.formattedValue} | ${src} | fisso ${(d.w_fixed*100).toFixed(0)}%, mobile ${(d.w_mobile*100).toFixed(0)}%`;
+            }
+          }
+        },
+        annotation: {
+          annotations: {
+            kantarZone: kantarIdx >= 0 ? {
+              type: 'box', xMin: kantarIdx, xMax: labels.length-1,
+              backgroundColor: 'rgba(230,0,0,0.04)', borderWidth: 0
+            } : {},
+            event2021: annot2021 >= 0 ? {
+              type: 'line', xMin: annot2021, xMax: annot2021,
+              borderColor: 'rgba(100,100,100,0.5)', borderWidth: 1.5, borderDash: [4,3],
+              label: { display: true, content: 'Partnership Sinner', position: 'start', font: { size: 10 }, color: '#555', backgroundColor: 'rgba(255,255,255,0.85)', padding: 4 }
+            } : {},
+            event2024: annot2024 >= 0 ? {
+              type: 'line', xMin: annot2024, xMax: annot2024,
+              borderColor: '#FDC400', borderWidth: 2, borderDash: [4,3],
+              label: { display: true, content: 'Merge Fastweb+Vodafone', position: 'start', font: { size: 10 }, color: '#555', backgroundColor: 'rgba(255,255,255,0.85)', padding: 4 }
+            } : {}
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { maxTicksLimit: 12, font: { size: 10 } }, grid: { display: false } },
+        y: { min: 35, max: 90, ticks: { font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.05)' } }
+      }
+    }
+  });
+}
+
+// ============================================================
+// HEATMAP TABLE
+// ============================================================
+function buildHeatmapTable() {
+  const years = ['2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+  const tbody = document.getElementById('heatmap-tbody');
+  BRANDS.forEach(brand => {
+    const vals = years.map(y => ANNUAL_AVGS[brand][y] || null);
+    const valid = vals.filter(v => v !== null);
+    const min = Math.min(...valid);
+    const max = Math.max(...valid);
+    const tr = document.createElement('tr');
+    let html = `<td class="brand-name"><span class="brand-dot" style="background:${BRAND_COLORS[brand]}"></span>${brand}</td>`;
+    vals.forEach((v, i) => {
+      if (v === null) { html += `<td class="val-cell" style="color:#ccc;">—</td>`; return; }
+      const t = (v - min) / (max - min);
+      // Interpolate green-white-red
+      let r, g, b;
+      if (t > 0.5) {
+        // white to green
+        const f = (t - 0.5) * 2;
+        r = Math.round(255 - f * 140);
+        g = Math.round(255 - f * 60);
+        b = Math.round(255 - f * 130);
+      } else {
+        // red to white
+        const f = t * 2;
+        r = 255;
+        g = Math.round(f * 230);
+        b = Math.round(f * 230);
+      }
+      const textColor = t > 0.7 || t < 0.2 ? '#fff' : '#222';
+      html += `<td class="val-cell" style="background:rgb(${r},${g},${b});color:${textColor};">${v.toFixed(1)}</td>`;
+    });
+    tr.innerHTML = html;
+    tbody.appendChild(tr);
+  });
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  buildWeightsTable();
+  buildCorrTable();
+  buildMainChart();
+  buildBarChart();
+  buildFastwWebChart();
+  buildHeatmapTable();
+});
+</script>
+</body>
+</html>
