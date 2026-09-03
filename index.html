@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UBA Telco Italia — KPI Armonizzato 2018-2026</title>
+<title>UBA Telco Italy — Harmonised KPI 2018-2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -264,13 +264,13 @@
 <!-- HEADER -->
 <div class="page-header">
   <div class="container">
-    <h1>UBA Telco Italia — <span>KPI Armonizzato</span> 2018-2026</h1>
-    <div class="subtitle">Indice Unaided Brand Awareness ponderato per customer base fisso/mobile — dati mensili</div>
+    <h1>UBA Telco Italy — <span>Harmonised KPI</span> 2018-2026</h1>
+    <div class="subtitle">Unaided Brand Awareness index weighted by fixed/mobile customer base — monthly data</div>
     <div class="source-badges">
       <span class="badge badge-merkle">📊 Merkle 2018–2023</span>
       <span class="badge badge-doxa">📊 Doxa 2024–2025</span>
       <span class="badge badge-kantar">📊 Kantar 2026+</span>
-      <span class="badge badge-agcom">🏛 Pesi AGCOM per operatore</span>
+      <span class="badge badge-agcom">🏛 AGCOM Weights by operator</span>
     </div>
   </div>
 </div>
@@ -278,32 +278,32 @@
 <!-- SEZIONE 1: IL METODO -->
 <div class="container">
 <div class="section">
-  <div class="section-title">Il Metodo</div>
+  <div class="section-title">The Methodology</div>
 
   <div class="method-grid">
     <div class="method-box">
-      <div class="phase-tag" style="background:rgba(253,196,0,0.15);color:#b8860b;">Fase 1 — Dati storici</div>
-      <h3>Tre fasi dati</h3>
-      <p><strong>Merkle 2018–2023:</strong> tracciamento UBA mensile su fisso e mobile separati, metodo CAWI/CATI Merkle. <strong>Doxa 2024–2025:</strong> continuità metodologica con Merkle, stesso panel. <strong>Kantar 2026+:</strong> nuovo istituto con awareness unica (non split fisso/mobile). I dati Kantar sono raccordati con un fattore di correzione brand-specifico calcolato sul periodo di sovrapposizione.</p>
+      <div class="phase-tag" style="background:rgba(253,196,0,0.15);color:#b8860b;">Phase 1 — Historical data</div>
+      <h3>Three data phases</h3>
+      <p><strong>Merkle 2018–2023:</strong> monthly UBA tracking on fixed and mobile separately, Merkle CAWI/CATI methodology. <strong>Doxa 2024–2025:</strong> methodological continuity with Merkle, same panel. <strong>Kantar 2026+:</strong> new institute with single awareness measure (not split fixed/mobile). Kantar data is harmonised with a brand-specific correction factor calculated over the overlap period.</p>
     </div>
     <div class="method-box">
-      <div class="phase-tag" style="background:rgba(0,77,159,0.1);color:#004d9f;">Fase 2 — Pesi AGCOM</div>
-      <h3>Pesi brand-specifici</h3>
-      <p>Per ogni brand e ogni anno si calcola il peso fisso/mobile in base alla customer base reale AGCOM: <strong>W_fisso = CB_fisso / (CB_fisso + CB_mobile)</strong>. I pesi variano significativamente tra brand (Fastweb prevalentemente fisso; Iliad mobile puro fino al 2022) e nel tempo (la quota mobile di Fastweb cresce da 2% nel 2018 a 26% nel 2025).</p>
+      <div class="phase-tag" style="background:rgba(0,77,159,0.1);color:#004d9f;">Phase 2 — AGCOM Weights</div>
+      <h3>Brand-specific weights</h3>
+      <p>For each brand and year, the fixed/mobile weight is calculated based on the real AGCOM customer base: <strong>W_fixed = CB_fixed / (CB_fixed + CB_mobile)</strong>. Weights vary significantly across brands (Fastweb predominantly fixed; Iliad mobile-only until 2022) and over time (Fastweb's mobile share grows from 2% in 2018 to 26% in 2025).</p>
     </div>
     <div class="method-box">
-      <div class="phase-tag" style="background:rgba(230,0,0,0.1);color:#c00;">Fase 3 — Raccordo Kantar</div>
-      <h3>Continuità di serie</h3>
-      <p>Il cambio Doxa → Kantar (gen 2026) introduce una discontinuità sistematica. Per garantire continuità, si calcola un fattore correttivo <strong>k = avg(Doxa ott-dic 2025) / avg(Kantar gen-mar 2026)</strong> e lo si applica a tutti i dati Kantar. I fattori variano per brand: Fastweb +21.8%, TIM +7.2%, Vodafone +13.8%.</p>
+      <div class="phase-tag" style="background:rgba(230,0,0,0.1);color:#c00;">Phase 3 — Kantar Harmonisation</div>
+      <h3>Series continuity</h3>
+      <p>The switch Doxa → Kantar (Jan 2026) introduces a systematic discontinuity. To ensure continuity, a correction factor <strong>k = avg(Doxa Oct–Dec 2025) / avg(Kantar Jan–Mar 2026)</strong> is calculated and applied to all Kantar data. Factors vary by brand: Fastweb +21.8%, TIM +7.2%, Vodafone +13.8%.</p>
     </div>
   </div>
 
-  <div class="formula-box">UBA_combined(brand, mese) = UBA_fisso × W_fisso(brand, anno) + UBA_mobile × W_mobile(brand, anno)<br>UBA_adj_kantar = UBA_kantar_raw × k(brand)</div>
+  <div class="formula-box">UBA_combined(brand, month) = UBA_fixed × W_fixed(brand, year) + UBA_mobile × W_mobile(brand, year)<br>UBA_adj_kantar = UBA_kantar_raw × k(brand)</div>
 
   <!-- Tabella pesi fisso/mobile per brand per anno -->
   <div class="card">
-    <div class="chart-title">Pesi fisso/mobile per brand e anno (AGCOM)</div>
-    <div class="chart-subtitle">W_fisso = quota linee BB/UBB fisso / (quota fisso + quota SIM Human). Fonte: Osservatori AGCOM 2018-2026.</div>
+    <div class="chart-title">Fixed/mobile weights by brand and year (AGCOM)</div>
+    <div class="chart-subtitle">W_fixed = share of fixed BB/UBB lines / (fixed share + Human SIM share). Source: AGCOM Observatories 2018-2026.</div>
     <div class="table-wrap">
       <table id="weights-table">
         <thead>
@@ -320,8 +320,8 @@
 
   <!-- Tabella fattori correzione -->
   <div class="card">
-    <div class="chart-title">Fattori di correzione Doxa → Kantar (2026)</div>
-    <div class="chart-subtitle">Calcolati come media(UBA_doxa ott-dic 2025) / media(UBA_kantar gen-mar 2026). Riflettono le differenze di metodo tra istituti.</div>
+    <div class="chart-title">Doxa → Kantar correction factors (2026)</div>
+    <div class="chart-subtitle">Calculated as avg(UBA_doxa Oct–Dec 2025) / avg(UBA_kantar Jan–Mar 2026). Reflects methodological differences between institutes.</div>
     <div class="table-wrap">
       <table class="corr-table">
         <thead>
@@ -341,16 +341,16 @@
   <!-- Box espandibile correzione Doxa Kantar -->
   <details style="margin-top:20px;">
     <summary style="cursor:pointer;font-weight:700;font-size:0.95rem;padding:12px 16px;background:#f8f9fa;border:1px solid #e9ecef;border-radius:8px;list-style:none;display:flex;align-items:center;gap:8px;">
-      <span style="font-size:1.1rem;">&#x25B6;</span> Come funziona la correzione Doxa → Kantar
+      <span style="font-size:1.1rem;">&#x25B6;</span> How the Doxa → Kantar correction works
     </summary>
     <div style="padding:18px;background:#fafbfc;border:1px solid #e9ecef;border-top:none;border-radius:0 0 8px 8px;font-size:0.87rem;line-height:1.8;color:#333;">
-      <p><strong>Il problema</strong>: Doxa misurava l'awareness separatamente per il mercato fisso e per il mobile. Kantar misura l'awareness di brand a livello totale (tutti gli italiani). I due metodi non sono confrontabili direttamente: Kantar tende a rilevare valori più bassi perché include anche persone che non hanno familiarità con il mercato fisso o mobile specifico del brand.</p>
+      <p><strong>The problem</strong>: Doxa measured awareness separately for the fixed and mobile markets. Kantar measures brand awareness at a total level (all Italians). The two methods are not directly comparable: Kantar tends to record lower values because it also includes people who are not familiar with the specific fixed or mobile market of the brand.</p>
       <br>
-      <p><strong>La soluzione</strong>: Per ogni brand, calcoliamo il fattore di raccordo k = media_Doxa_ultimi3mesi / media_Kantar_primi3mesi. Questo fattore cattura il "bias sistematico" tra i due istituti per quel brand specifico. Applicando k ai valori Kantar, li portiamo sulla scala Doxa, rendendo la serie confrontabile nel tempo.</p>
+      <p><strong>The solution</strong>: For each brand, we calculate the harmonisation factor k = avg_Doxa_last3months / avg_Kantar_first3months. This factor captures the "systematic bias" between the two institutes for that specific brand. By applying k to Kantar values, we bring them onto the Doxa scale, making the series comparable over time.</p>
       <br>
-      <p><strong>Perché è brand-specifico</strong>: Il fattore k è diverso per ogni brand perché il bias dipende dal mix fisso/mobile del brand stesso. Fastweb (storicamente fisso) ha il fattore più alto (1.22) perché la sua awareness nel mercato fisso era molto più alta di quella nel mercato totale. Iliad (mobile-first) ha il fattore più basso (1.12) perché era già misurato principalmente sul mobile.</p>
+      <p><strong>Why it is brand-specific</strong>: The factor k differs for each brand because the bias depends on the brand's own fixed/mobile mix. Fastweb (historically fixed) has the highest factor (1.22) because its awareness in the fixed market was much higher than in the total market. Iliad (mobile-first) has the lowest factor (1.12) because it was already measured mainly on mobile.</p>
       <br>
-      <p><strong>Limitazione</strong>: la correzione assume che il bias sia costante nel tempo. Se Kantar cambia metodologia internamente, il fattore potrebbe diventare impreciso. I valori post-raccordo vanno sempre letti con questa consapevolezza.</p>
+      <p><strong>Limitation</strong>: the correction assumes the bias is constant over time. If Kantar changes its methodology internally, the factor may become inaccurate. Post-harmonisation values should always be read with this in mind.</p>
     </div>
   </details>
 
@@ -358,10 +358,10 @@
 
 <!-- SEZIONE 2: GRAFICO PRINCIPALE -->
 <div class="section">
-  <div class="section-title">KPI Armonizzato Mensile — Tutti i Brand</div>
+  <div class="section-title">Monthly Harmonised KPI — All Brands</div>
   <div class="chart-card">
-    <div class="chart-title">UBA Combinato 2018–2026 (scala 0–100)</div>
-    <div class="chart-subtitle">Media ponderata UBA fisso e mobile per customer base AGCOM. Hover per dettaglio mensile.</div>
+    <div class="chart-title">Combined UBA 2018–2026 (scale 0–100)</div>
+    <div class="chart-subtitle">Weighted average of fixed and mobile UBA by AGCOM customer base. Hover for monthly detail.</div>
     <div class="brand-legend" id="main-legend"></div>
     <div class="zone-legend">
       <span class="zone-item"><span class="zone-swatch" style="background:rgba(253,196,0,0.15);"></span> Merkle / Doxa (2018–2025)</span>
@@ -376,10 +376,10 @@
 
 <!-- SEZIONE 3: TREND TRIMESTRALE -->
 <div class="section">
-  <div class="section-title">Sezione 3 — Trend Trimestrale</div>
+  <div class="section-title">Section 3 — Quarterly Trend</div>
   <div class="chart-card">
-    <div class="chart-title">UBA Trimestrale — Media per Trimestre 2018–2026</div>
-    <div class="chart-subtitle">Media dei valori mensili per trimestre (Q1=gen-mar, Q2=apr-giu, Q3=lug-set, Q4=ott-dic). Le etichette mostrano i valori Vodafone.</div>
+    <div class="chart-title">Quarterly UBA — Average per Quarter 2018–2026</div>
+    <div class="chart-subtitle">Average of monthly values per quarter (Q1=Jan–Mar, Q2=Apr–Jun, Q3=Jul–Sep, Q4=Oct–Dec). Labels show Vodafone values.</div>
     <div class="chart-wrap" style="height:400px;">
       <canvas id="quarterlyChart"></canvas>
     </div>
@@ -388,10 +388,10 @@
 
 <!-- SEZIONE 4: MEDIA ANNUALE -->
 <div class="section">
-  <div class="section-title">Sezione 4 — Trend Annuale</div>
+  <div class="section-title">Section 4 — Annual Trend</div>
   <div class="chart-card">
-    <div class="chart-title">UBA medio annuale — Grouped Bar Chart</div>
-    <div class="chart-subtitle">Valori medi annuali del KPI armonizzato per brand. I dati 2026 coprono gen–lug 2026.</div>
+    <div class="chart-title">Annual Average UBA — Grouped Bar Chart</div>
+    <div class="chart-subtitle">Annual average values of the harmonised KPI by brand. 2026 data covers Jan–Jul 2026.</div>
     <div class="chart-wrap" style="height:380px;">
       <canvas id="barChart"></canvas>
     </div>
@@ -401,18 +401,18 @@
 
 <!-- SEZIONE 5: ANALISI MERCATO -->
 <div class="section">
-  <div class="section-title">Analisi di Mercato — Benchmark Competitivo</div>
+  <div class="section-title">Market Analysis — Competitive Benchmark</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;" class="market-grid">
     <div class="chart-card" style="margin-bottom:0;">
-      <div class="chart-title">Grafico A — Fastweb vs Mercato</div>
-      <div class="chart-subtitle">Fastweb vs media semplice e pesata TIM/Vodafone/Wind3. Asse secondario: gap Fastweb rispetto alla media semplice.</div>
+      <div class="chart-title">Chart A — Fastweb vs Market</div>
+      <div class="chart-subtitle">Fastweb &amp; Vodafone vs simple and weighted average of TIM/Vodafone/Wind3. Secondary axis: gap of each brand vs simple average.</div>
       <div class="chart-wrap" style="height:360px;">
         <canvas id="marketChartA"></canvas>
       </div>
     </div>
     <div class="chart-card" style="margin-bottom:0;">
-      <div class="chart-title">Grafico B — Fastweb vs Singoli Competitor</div>
-      <div class="chart-subtitle">Media annuale: Fastweb, TIM, Vodafone, Wind3.</div>
+      <div class="chart-title">Chart B — Fastweb vs Individual Competitors</div>
+      <div class="chart-subtitle">Annual average: Fastweb (yellow, highlighted) and Vodafone (red, highlighted) vs TIM and Wind3.</div>
       <div class="chart-wrap" style="height:360px;">
         <canvas id="marketChartB"></canvas>
       </div>
@@ -423,17 +423,17 @@
   </style>
   <div class="card" style="border-left:4px solid #FDC400;background:#fffdf0;">
     <p style="font-size:0.88rem;line-height:1.75;color:#333;">
-      La <strong>media semplice dei tre main brand</strong> (TIM, Vodafone, Wind3) rappresenta la direzione generale del mercato dell'awareness telco in Italia — un benchmark indipendente dalle dimensioni aziendali. Quando Fastweb si distacca positivamente da questo benchmark, significa che sta guadagnando awareness più velocemente del mercato. Quando il gap si restringe, il mercato si muove più velocemente di Fastweb.
+      The <strong>simple average of the three main brands</strong> (TIM, Vodafone, Wind3) represents the general direction of the telco awareness market in Italy — a benchmark independent of company size. When Fastweb pulls positively away from this benchmark, it means it is gaining awareness faster than the market. When the gap narrows, the market is moving faster than Fastweb.
     </p>
   </div>
 </div>
 
 <!-- SEZIONE 5: FOCUS FASTWEB -->
 <div class="section">
-  <div class="section-title">Focus Fastweb</div>
+  <div class="section-title">Fastweb Focus</div>
   <div class="chart-card">
-    <div class="chart-title" style="color:var(--fastweb);">Fastweb — UBA Armonizzato con eventi chiave</div>
-    <div class="chart-subtitle">Trend mensile Fastweb con annotazioni degli eventi più rilevanti per il brand.</div>
+    <div class="chart-title" style="color:var(--fastweb);">Fastweb — Harmonised UBA with key events</div>
+    <div class="chart-subtitle">Fastweb monthly trend with annotations of the most relevant brand events.</div>
     <div class="chart-wrap" style="height:360px;">
       <canvas id="faswtwChart"></canvas>
     </div>
@@ -442,10 +442,10 @@
 
 <!-- SEZIONE 6: TABELLA DATI ANNUALI -->
 <div class="section">
-  <div class="section-title">Tabella Dati Annuali</div>
+  <div class="section-title">Annual Data Table</div>
   <div class="card">
-    <div class="chart-title">Media UBA annuale per brand — colorazione condizionale</div>
-    <div class="chart-subtitle">Verde = valore alto per quel brand nel periodo 2018-2026, Rosso = valore basso. La colorazione è relativa per ciascun brand.</div>
+    <div class="chart-title">Annual UBA average by brand — conditional colouring</div>
+    <div class="chart-subtitle">Green = high value for that brand in the 2018–2026 period, Red = low value. Colouring is relative to each brand.</div>
     <div class="table-wrap">
       <table>
         <thead>
@@ -457,7 +457,7 @@
         </thead>
         <tbody id="heatmap-tbody"></tbody>
       </table>
-      <p style="font-size:0.78rem;color:var(--text-secondary);margin-top:10px;">* 2026 = media gen–lug 2026 (dati Kantar raccordati).</p>
+      <p style="font-size:0.78rem;color:var(--text-secondary);margin-top:10px;">* 2026 = average Jan–Jul 2026 (harmonised Kantar data).</p>
     </div>
   </div>
 </div>
@@ -467,23 +467,23 @@
 <!-- FOOTER -->
 <div class="page-footer">
   <div class="container">
-    <div class="footer-title">Note metodologiche</div>
+    <div class="footer-title">Methodological notes</div>
     <p>
-      Il KPI UBA armonizzato è calcolato come media ponderata degli indici di Unaided Brand Awareness rilevati separatamente su clienti fisso broadband e mobile (SIM Human). I pesi annuali sono brand-specifici e derivano dalle quote di customer base ufficiali pubblicate da AGCOM negli Osservatori sulle Comunicazioni (2018–2026). La ponderazione riflette il fatto che brand storicamente fissi (Fastweb) hanno una base clienti diversa da brand a prevalenza mobile (Iliad) o bilanciati (TIM, Vodafone, WindTre).
+      The harmonised UBA KPI is calculated as a weighted average of Unaided Brand Awareness indices measured separately on fixed broadband and mobile customers (Human SIM). Annual weights are brand-specific and derived from the official customer base shares published by AGCOM in the Communications Observatories (2018–2026). The weighting reflects the fact that historically fixed brands (Fastweb) have a different customer base from predominantly mobile brands (Iliad) or balanced ones (TIM, Vodafone, WindTre).
     </p>
     <br>
     <p>
-      <strong>Fonti AGCOM:</strong>
-      <a href="https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n1-2026" target="_blank">Osservatorio n.1/2026</a> ·
-      <a href="https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n-2-2026" target="_blank">Osservatorio n.2/2026</a> ·
+      <strong>AGCOM Sources:</strong>
+      <a href="https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n1-2026" target="_blank">Observatory no.1/2026</a> ·
+      <a href="https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n-2-2026" target="_blank">Observatory no.2/2026</a> ·
       <a href="https://www.mondomobileweb.it/300900-telefonia-fissa-quote-di-mercato/" target="_blank">MondoMobileWeb (fisso 2024)</a> ·
       <a href="https://www.mondomobileweb.it/279296-telefonia-mobile-quote-di-mercato-fine-2023/" target="_blank">MondoMobileWeb (mobile 2023)</a> ·
-      <a href="https://temi.camera.it/leg19/post/OCD15-13653" target="_blank">Camera.it (dati storici)</a>
+      <a href="https://temi.camera.it/leg19/post/OCD15-13653" target="_blank">Camera.it (historical data)</a>
     </p>
     <br>
     <p style="color:#666;">
-      Elaborazione interna Fastweb+Vodafone — Direzione Brand &amp; Media | Dati riservati ad uso interno.
-      Generato da Marvin (NextMindLab) · Settembre 2026.
+      Internal analysis Fastweb+Vodafone — Brand &amp; Media Division | Confidential — for internal use only.
+      Generated by Marvin (NextMindLab) · September 2026.
     </p>
   </div>
 </div>
@@ -617,28 +617,17 @@ function buildQuarterlyChart() {
 
   var datasets = BRANDS.map(function(brand) {
     var values = quarters.map(function(q) { return QAVGS[brand][q] !== undefined ? QAVGS[brand][q] : null; });
-    var isVodafone = brand === 'Vodafone';
     return {
       label: brand,
       data: values,
       borderColor: BRAND_COLORS[brand],
       backgroundColor: getColor(brand, 0.08),
-      borderWidth: isVodafone ? 3 : 2,
-      pointRadius: isVodafone ? 4 : 2,
-      pointHoverRadius: 6,
+      borderWidth: 2,
+      pointRadius: 0,
+      pointHoverRadius: 5,
       tension: 0.3,
       spanGaps: false,
-      datalabels: isVodafone ? {
-        display: true,
-        align: 'top',
-        anchor: 'end',
-        formatter: function(v) { return v !== null ? v.toFixed(1) : ''; },
-        font: { size: 9, weight: '600' },
-        color: '#E60000',
-        backgroundColor: 'rgba(255,255,255,0.75)',
-        borderRadius: 3,
-        padding: { top: 2, bottom: 2, left: 3, right: 3 }
-      } : { display: false }
+      datalabels: { display: false }
     };
   });
 
@@ -652,7 +641,7 @@ function buildQuarterlyChart() {
       interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } },
-        datalabels: {},
+        datalabels: { display: false },
         tooltip: {
           callbacks: {
             label: function(item) {
@@ -666,8 +655,7 @@ function buildQuarterlyChart() {
         x: { ticks: { font: { size: 9 }, maxRotation: 45 }, grid: { display: false } },
         y: { min: 30, max: 105, ticks: { font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.05)' } }
       }
-    },
-    plugins: [ChartDataLabels]
+    }
   });
 }
 
@@ -695,7 +683,7 @@ function computeMarketAvg() {
     UBA_DATA.series[brand].forEach(function(item) { maps[brand][item.month] = item.value; });
   });
 
-  var simple = {}, weighted = {}, fastweb = {}, gap = {};
+  var simple = {}, weighted = {}, fastweb = {}, vodafone = {}, gap = {}, gapVodafone = {};
   allMonths.forEach(function(m) {
     var t = maps['TIM'][m], v = maps['Vodafone'][m], w = maps['WindTre'][m], f = maps['Fastweb'][m];
     if (t !== undefined && v !== undefined && w !== undefined) {
@@ -703,15 +691,17 @@ function computeMarketAvg() {
       weighted[m] = t * wTIM + v * wVod + w * wWin;
     }
     if (f !== undefined) fastweb[m] = f;
+    if (v !== undefined) vodafone[m] = v;
     if (f !== undefined && simple[m] !== undefined) gap[m] = f - simple[m];
+    if (v !== undefined && simple[m] !== undefined) gapVodafone[m] = v - simple[m];
   });
 
-  return { allMonths: allMonths, simple: simple, weighted: weighted, fastweb: fastweb, gap: gap };
+  return { allMonths: allMonths, simple: simple, weighted: weighted, fastweb: fastweb, vodafone: vodafone, gap: gap, gapVodafone: gapVodafone };
 }
 
 function buildMarketChartA() {
   var data = computeMarketAvg();
-  var allMonths = data.allMonths, simple = data.simple, weighted = data.weighted, fastweb = data.fastweb, gap = data.gap;
+  var allMonths = data.allMonths, simple = data.simple, weighted = data.weighted, fastweb = data.fastweb, vodafone = data.vodafone, gap = data.gap, gapVodafone = data.gapVodafone;
   var labels = allMonths.map(monthLabel);
   var dsMain = [
     {
@@ -727,7 +717,19 @@ function buildMarketChartA() {
       datalabels: { display: false }
     },
     {
-      label: 'Media Semplice (TIM+Vod+Win3)',
+      label: 'Vodafone',
+      data: allMonths.map(function(m) { return vodafone[m] !== undefined ? vodafone[m] : null; }),
+      borderColor: '#E60000',
+      backgroundColor: 'rgba(230,0,0,0.07)',
+      borderWidth: 3,
+      pointRadius: 0,
+      tension: 0.3,
+      spanGaps: false,
+      yAxisID: 'y',
+      datalabels: { display: false }
+    },
+    {
+      label: 'Simple Average (TIM+Vod+Win3)',
       data: allMonths.map(function(m) { return simple[m] !== undefined ? simple[m] : null; }),
       borderColor: '#999',
       borderDash: [5,3],
@@ -739,7 +741,7 @@ function buildMarketChartA() {
       datalabels: { display: false }
     },
     {
-      label: 'Media Pesata AGCOM',
+      label: 'AGCOM Weighted Average',
       data: allMonths.map(function(m) { return weighted[m] !== undefined ? weighted[m] : null; }),
       borderColor: '#555',
       borderDash: [3,3],
@@ -751,12 +753,24 @@ function buildMarketChartA() {
       datalabels: { display: false }
     },
     {
-      label: 'Gap Fastweb (asse dx)',
+      label: 'Fastweb Gap (right axis)',
       data: allMonths.map(function(m) { return gap[m] !== undefined ? gap[m] : null; }),
       borderColor: '#22aa44',
       fill: { target: { value: 0 }, above: 'rgba(34,170,68,0.1)', below: 'rgba(230,0,0,0.1)' },
       borderWidth: 1.5,
       borderDash: [2,2],
+      pointRadius: 0,
+      tension: 0.2,
+      spanGaps: false,
+      yAxisID: 'y2',
+      datalabels: { display: false }
+    },
+    {
+      label: 'Vodafone Gap (right axis)',
+      data: allMonths.map(function(m) { return gapVodafone[m] !== undefined ? gapVodafone[m] : null; }),
+      borderColor: '#E60000',
+      borderDash: [4,4],
+      borderWidth: 1.5,
       pointRadius: 0,
       tension: 0.2,
       spanGaps: false,
@@ -789,8 +803,7 @@ function buildMarketChartA() {
         y: { min: 30, max: 105, position: 'left', ticks: { font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.04)' } },
         y2: { min: -30, max: 30, position: 'right', title: { display: true, text: 'Gap', font: { size: 10 } }, grid: { display: false } }
       }
-    },
-    plugins: [ChartDataLabels]
+    }
   });
 }
 
@@ -799,35 +812,40 @@ function buildMarketChartB() {
   var mainBrands = ['Fastweb','TIM','Vodafone','WindTre'];
   var colors = { Fastweb: '#FDC400', TIM: '#004d9f', Vodafone: '#E60000', WindTre: '#6600cc' };
   var datasets = mainBrands.map(function(brand) {
+    var isHighlighted = brand === 'Fastweb' || brand === 'Vodafone';
     return {
       label: brand,
       data: years.map(function(y) { return ANNUAL_AVGS[brand][y] || null; }),
-      backgroundColor: colors[brand] + 'CC',
       borderColor: colors[brand],
-      borderWidth: 1.5,
-      borderRadius: 3,
+      backgroundColor: isHighlighted ? (colors[brand] + '22') : 'transparent',
+      borderWidth: isHighlighted ? 3 : 1.5,
+      borderDash: isHighlighted ? [] : [4,3],
+      pointRadius: isHighlighted ? 5 : 3,
+      pointHoverRadius: 7,
+      tension: 0.3,
+      spanGaps: false,
       datalabels: { display: false }
     };
   });
 
   var ctx = document.getElementById('marketChartB').getContext('2d');
   new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data: { labels: years, datasets: datasets },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } },
         datalabels: { display: false },
-        tooltip: { callbacks: { label: function(item) { return ' ' + item.dataset.label + ': ' + item.formattedValue; } } }
+        tooltip: { callbacks: { label: function(item) { return ' ' + item.dataset.label + ': ' + (item.raw !== null ? parseFloat(item.raw).toFixed(1) : 'N/D'); } } }
       },
       scales: {
         x: { grid: { display: false } },
         y: { min: 30, ticks: { font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.04)' } }
       }
-    },
-    plugins: [ChartDataLabels]
+    }
   });
 }
 
@@ -859,21 +877,11 @@ function buildMainChart() {
       borderColor: BRAND_COLORS[brand],
       backgroundColor: getColor(brand, 0.08),
       borderWidth: isVodafone ? 3 : 2,
-      pointRadius: isVodafone ? 2 : 0,
+      pointRadius: 0,
       pointHoverRadius: 5,
       tension: 0.3,
       spanGaps: false,
-      datalabels: isVodafone ? {
-        display: (ctx) => ctx.dataIndex % 3 === 0,
-        align: 'top',
-        anchor: 'end',
-        formatter: (v) => v !== null ? v.toFixed(1) : '',
-        font: { size: 8, weight: '600' },
-        color: '#E60000',
-        backgroundColor: 'rgba(255,255,255,0.75)',
-        borderRadius: 3,
-        padding: { top: 1, bottom: 1, left: 2, right: 2 }
-      } : { display: false }
+      datalabels: { display: false }
     };
   });
 
@@ -896,7 +904,7 @@ function buildMainChart() {
       interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: { display: false },
-        datalabels: {},
+        datalabels: { display: false },
         tooltip: {
           callbacks: {
             title: (items) => items[0].label,
@@ -936,51 +944,41 @@ function buildMainChart() {
         x: { ticks: { maxTicksLimit: 12, font: { size: 10 } }, grid: { display: false } },
         y: { min: 30, max: 105, ticks: { font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.05)' } }
       }
-    },
-    plugins: [ChartDataLabels]
+    }
   });
 }
 
 // ============================================================
-// BAR CHART (annual average)
+// LINE CHART (annual average)
 // ============================================================
 function buildBarChart() {
   const years = ['2018','2019','2020','2021','2022','2023','2024','2025','2026'];
-  const datasets = BRANDS.map(brand => {
-    const isVodafone = brand === 'Vodafone';
-    return {
-      label: brand,
-      data: years.map(y => ANNUAL_AVGS[brand][y] || null),
-      backgroundColor: getColor(brand, 0.82),
-      borderColor: BRAND_COLORS[brand],
-      borderWidth: 1.5,
-      borderRadius: 3,
-      datalabels: isVodafone ? {
-        display: true,
-        anchor: 'end',
-        align: 'top',
-        formatter: (v) => v !== null ? v.toFixed(1) : '',
-        font: { size: 9, weight: '700' },
-        color: '#E60000',
-        backgroundColor: 'rgba(255,255,255,0.85)',
-        borderRadius: 3,
-        padding: { top: 2, bottom: 2, left: 3, right: 3 }
-      } : { display: false }
-    };
-  });
+  const datasets = BRANDS.map(brand => ({
+    label: brand,
+    data: years.map(y => ANNUAL_AVGS[brand][y] || null),
+    borderColor: BRAND_COLORS[brand],
+    backgroundColor: getColor(brand, 0.08),
+    borderWidth: 2,
+    pointRadius: 4,
+    pointHoverRadius: 7,
+    tension: 0.3,
+    spanGaps: false,
+    datalabels: { display: false }
+  }));
   const ctx = document.getElementById('barChart').getContext('2d');
   new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data: { labels: years, datasets },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } },
-        datalabels: {},
+        datalabels: { display: false },
         tooltip: {
           callbacks: {
-            label: (item) => ` ${item.dataset.label}: ${item.formattedValue}`
+            label: (item) => ` ${item.dataset.label}: ${item.raw !== null ? item.raw.toFixed(1) : 'N/D'}`
           }
         }
       },
@@ -988,8 +986,7 @@ function buildBarChart() {
         x: { grid: { display: false } },
         y: { min: 30, ticks: { font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.05)' } }
       }
-    },
-    plugins: [ChartDataLabels]
+    }
   });
 }
 
